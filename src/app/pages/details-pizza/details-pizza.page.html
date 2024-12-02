@@ -1,0 +1,202 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="box-back-btn">
+    <ion-button fill="clear" expand="full" (click)="pushRouter()">
+      <ion-text size="large" color="secondary">Atras</ion-text>
+    </ion-button>
+  </ion-card>
+  @if (pizza) {
+
+  <ion-card class="box-img">
+    <img
+      [src]="pizza.image"
+      alt="{{ pizza.nombre }}"
+      class="img-pizza-details"
+    />
+  </ion-card>
+
+  <ion-card class="box-details">
+    <ion-card-title style="color: cornflowerblue"
+      >{{ pizza.nombre }}</ion-card-title
+    >
+    <ion-text>{{pizza.descripcion}}</ion-text>
+  </ion-card>
+
+  @if (pizza.opciones.cambioDeMasa || pizza.opciones.cambioSabor) {
+
+  <ion-card class="box-type">
+    @if (pizza.opciones.cambioDeMasa) {
+
+    <div class="box-text">
+      <ion-select
+        label="Tipo de masa"
+        labelPlacement="floating"
+        [value]="masaSeleccionada"
+        (ionChange)="onMasaChange($event)"
+      >
+        <ion-select-option value="artesanal">artesanal</ion-select-option>
+        <ion-select-option value="clasica">clasica</ion-select-option>
+      </ion-select>
+    </div>
+    } @if (pizza.opciones.cambioSabor) {
+
+    <div class="box-text">
+      <ion-select
+        label="Tipo de sabor"
+        labelPlacement="floating"
+        [value]="tipoSeleccionado"
+        (ionChange)="onTipoChange($event)"
+      >
+        <ion-select-option value="salada">salada</ion-select-option>
+        <ion-select-option value="dulce">dulce</ion-select-option>
+        <ion-select-option value="salada-dulce">salada dulce</ion-select-option>
+      </ion-select>
+    </div>
+    }
+  </ion-card>
+  }
+
+  <ion-card class="box-price-select">
+    <ion-select
+      style="max-width: 150px"
+      label="Precio"
+      labelPlacement="floating"
+      [value]="tamanoSeleccionado"
+      (ionChange)="onTamanoChange($event)"
+    >
+      <ion-select-option value="familiar">familiar</ion-select-option>
+      <ion-select-option value="mediana">mediana</ion-select-option>
+      <ion-select-option value="personal">personal</ion-select-option>
+    </ion-select>
+  </ion-card>
+
+  @if (pizza.opciones.esDuo) {
+  <ion-card>
+    <ion-card-header style="text-align: center">
+      <ion-card-title>Seleccione las 2 mitades</ion-card-title>
+    </ion-card-header>
+    <div style="display: flex; justify-content: center">
+      <ion-select
+        style="max-width: 150px"
+        label="Primer mitad"
+        labelPlacement="floating"
+      >
+        @for (opt of opcionesDuo; track $index) {
+        <ion-select-option value="{{opt}}">{{opt}}</ion-select-option>
+        }
+      </ion-select>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <ion-select
+        style="max-width: 150px"
+        label="segunda midad"
+        labelPlacement="floating"
+      >
+        @for (opt of opcionesDuo; track $index) {
+        <ion-select-option value="{{opt}}">{{opt}}</ion-select-option>
+        }
+      </ion-select>
+    </div>
+  </ion-card>
+  } @if (pizza.opciones.esCuatroEstaciones) {
+  <ion-card>
+    <ion-card-header style="text-align: center">
+      <ion-card-title>Seleccione las 4 estaciones</ion-card-title>
+    </ion-card-header>
+    <div style="display: flex; justify-content: center">
+      <ion-select
+        style="max-width: 150px"
+        label="Primera estación"
+        labelPlacement="floating"
+      >
+        @for (item of opcionesCuatroEstaciones; track $index) {
+
+        <ion-select-option value="{{item}}">{{item}} </ion-select-option>
+        }
+      </ion-select>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <ion-select
+        style="max-width: 150px"
+        label="Segunda estación"
+        labelPlacement="floating"
+      >
+        @for (item of opcionesCuatroEstaciones; track $index) {
+
+        <ion-select-option value="{{item}}">{{item}} </ion-select-option>
+        }
+      </ion-select>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <ion-select
+        style="max-width: 150px"
+        label="Tercera estación"
+        labelPlacement="floating"
+      >
+        @for (item of opcionesCuatroEstaciones; track $index) {
+
+        <ion-select-option value="{{item}}">{{item}} </ion-select-option>
+        }
+      </ion-select>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <ion-select
+        style="max-width: 150px"
+        label="Cuarta estación"
+        labelPlacement="floating"
+      >
+        @for (item of opcionesCuatroEstaciones; track $index) {
+
+        <ion-select-option value="{{item}}">{{item}} </ion-select-option>
+        }
+      </ion-select>
+    </div>
+  </ion-card>
+  }
+
+  <ion-card>
+    <div class="precios-box">
+      <div class="detalles-card-box">
+        <div class="detalle-card">
+          <p>Unidad</p>
+          <strong>S/ {{precioUnitario}}</strong>
+        </div>
+        <div class="detalle-card">
+          <p>Total</p>
+          <strong>S/ {{precioTotal}} </strong>
+        </div>
+      </div>
+
+      <div class="btns-precios">
+        <ion-button fill="clear" (click)="decreaseQuantity()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="21"
+            height="21"
+            viewBox="0 0 20 20"
+          >
+            <path fill="#e11d48" d="M4 9h12v2H4z" />
+          </svg>
+        </ion-button>
+        <ion-button fill="clear"> {{quantity}} </ion-button>
+        <ion-button fill="clear" (click)="increaseQuantity()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="21"
+            height="21"
+            viewBox="0 0 24 24"
+          >
+            <path fill="#e11d48" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" />
+          </svg>
+        </ion-button>
+      </div>
+    </div>
+  </ion-card>
+
+  <ion-card>
+    <ion-button expand="block" (click)="addToCart()"
+      >{{ addToCartLoading ? "Agregando" : "Agregar al carrito"}}</ion-button
+    >
+  </ion-card>
+
+  }
+</ion-content>

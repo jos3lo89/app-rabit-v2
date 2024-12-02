@@ -1,0 +1,68 @@
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header style="text-align: center">
+      <ion-card-title>Iniciar Sesión</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form [formGroup]="form" (ngSubmit)="ingresar()">
+        <ion-list>
+          <ion-input
+            formControlName="email"
+            label="Correo Electronico"
+            label-placement="floating"
+            fill="solid"
+            placeholder="Ingrese su correo"
+            type="email"
+          ></ion-input>
+          <br />
+          <ion-input
+            formControlName="password"
+            label="Contraseña"
+            label-placement="floating"
+            fill="solid"
+            placeholder="Ingrese su contraseña"
+            type="password"
+          ></ion-input>
+          <br /><br />
+
+          <ion-button
+            expand="full"
+            type="submit"
+            [disabled]="isLoadingBtnSubmit"
+          >
+            @if (isLoadingBtnSubmit) {
+
+            <ion-spinner name="crescent"></ion-spinner>
+            } @else { Ingresar }
+          </ion-button>
+
+          <br />
+
+          @if (isLoadingGoogleBtn) {
+          <ion-button
+            size="small"
+            color="primary"
+            expand="block"
+            shape="round"
+            fill="clear"
+            class="btnLoadingGoogle"
+          >
+            <ion-spinner name="crescent"></ion-spinner>
+          </ion-button>
+          } @else {
+          <app-google-btn (clickMe)="loginWithGoogle()" />
+
+          }
+          <br />
+          <ion-button
+            expand="full"
+            fill="clear"
+            [routerLink]="['/auth/register']"
+            >Registrate</ion-button
+          >
+        </ion-list>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,20 @@
+.cart-button {
+  position: relative;
+
+  .cart-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(1%, -10%);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+}

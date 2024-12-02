@@ -1,0 +1,66 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="box-back-btn">
+    <ion-button fill="clear" expand="full" (click)="pushRouter()">
+      <ion-text size="large" color="secondary">Atras</ion-text>
+    </ion-button>
+  </ion-card>
+  @if (roll) {
+
+  <ion-card class="box-img">
+    <img [src]="roll.image" alt="{{ roll.nombre }}" class="img-roll-details" />
+  </ion-card>
+
+  <ion-card class="box-details">
+    <ion-card-title style="color: cornflowerblue"
+      >{{ roll.nombre }}</ion-card-title
+    >
+    <ion-text>{{roll.descripcion}}</ion-text>
+  </ion-card>
+
+  <ion-card>
+    <div class="precios-box">
+      <div class="detalles-card-box">
+        <div class="detalle-card">
+          <p>Unidad</p>
+          <strong>S/ {{precioUnitario}}</strong>
+        </div>
+        <div class="detalle-card">
+          <p>Total</p>
+          <strong>S/ {{precioTotal}} </strong>
+        </div>
+      </div>
+
+      <div class="btns-precios">
+        <ion-button fill="clear" (click)="decreaseQuantity()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="21"
+            height="21"
+            viewBox="0 0 20 20"
+          >
+            <path fill="#e11d48" d="M4 9h12v2H4z" />
+          </svg>
+        </ion-button>
+        <ion-button fill="clear"> {{quantity}} </ion-button>
+        <ion-button fill="clear" (click)="increaseQuantity()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="21"
+            height="21"
+            viewBox="0 0 24 24"
+          >
+            <path fill="#e11d48" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" />
+          </svg>
+        </ion-button>
+      </div>
+    </div>
+  </ion-card>
+
+  <ion-card>
+    <ion-button expand="block" (click)="addToCart()"
+      >{{addToCartLoading ? "Agregando": "Agregar al carrito" }}</ion-button
+    >
+  </ion-card>
+
+  }
+</ion-content>

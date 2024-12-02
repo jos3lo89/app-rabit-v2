@@ -1,0 +1,117 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="box-btn">
+    <ion-button fill="clear" size="full" (click)="pushRouter('/private/profile')">
+      Ir atras
+    </ion-button>
+  </ion-card>
+
+  <ion-title size="large" style="text-align: center">Agregar Calzone</ion-title>
+
+  <ion-card>
+    <ion-card-content>
+      <form [formGroup]="form" (ngSubmit)="addCalzone()">
+        <ion-input
+          formControlName="nombre"
+          label="Nombre"
+          label-placement="floating"
+          fill="solid"
+          placeholder="Ingrese el nombre"
+        ></ion-input>
+
+        <ion-textarea
+          formControlName="descripcion"
+          label="Descripción"
+          label-placement="floating"
+          fill="solid"
+          placeholder="Ingrese la descripción"
+        ></ion-textarea>
+
+        <ion-input
+          formControlName="precio"
+          label="Precio"
+          label-placement="floating"
+          fill="solid"
+          type="number"
+          placeholder="Ingrese el precio"
+        ></ion-input>
+        <br />
+
+        <!-- <div class="box-price"> -->
+        <!--   <ion-select -->
+        <!--     formControlName="precio" -->
+        <!--     label="Precio" -->
+        <!--     labelPlacement="floating" -->
+        <!--     (ionChange)="updateDynamicPrice($event)" -->
+        <!--   > -->
+        <!--     <ion-select-option aria-hidden="true" value="5">6 unidades</ion-select-option> -->
+        <!--     <ion-select-option aria-hidden="true" value="10">12 unidades</ion-select-option> -->
+        <!--   </ion-select> -->
+        <!---->
+        <!--   <div> -->
+        <!--     <ion-item> -->
+        <!--       <ion-label> {{ dynamicPrice | currency }}</ion-label> -->
+        <!--     </ion-item> -->
+        <!--   </div> -->
+        <!-- </div> -->
+
+        @if (!calzoneFoto) {
+
+        <ion-button color="tertiary" (click)="openModal2()"
+          >Agregar foto</ion-button
+        >
+        } @if (calzoneFoto) {
+        <div>
+          <ion-card>
+            <img [src]="calzoneFoto" alt="Foto de la pizza" />
+          </ion-card>
+          <!-- <ion-card> -->
+          <ion-button
+            (click)="quitarFoto()"
+            fill="clear"
+            size="full"
+            color="danger"
+          >
+            quitar foto
+          </ion-button>
+          <!-- </ion-card> -->
+        </div>
+        }
+
+        <ion-modal [isOpen]="openModal">
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>Seleccionar imagen</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button (click)="closeModal()">
+                    <ion-icon name="close"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+              <ion-button
+                expand="block"
+                (click)="takeImage(CameraSource.Camera)"
+              >
+                <ion-icon name="camera" slot="start"></ion-icon>
+                Tomar foto
+              </ion-button>
+              <ion-button
+                expand="block"
+                (click)="takeImage(CameraSource.Photos)"
+              >
+                <ion-icon name="image" slot="start"></ion-icon>
+                Seleccionar de galería
+              </ion-button>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+
+        <ion-button type="submit" [disabled]="!form.valid"
+          >{{addLoading ? "Registrando..." : "Registrar" }}</ion-button
+        >
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,6 @@
+<ion-buttons>
+  <ion-button [routerLink]="['/private/cart']" class="cart-button">
+    <ion-icon name="cart-outline" size="large"></ion-icon>
+    <div *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</div>
+  </ion-button>
+</ion-buttons>

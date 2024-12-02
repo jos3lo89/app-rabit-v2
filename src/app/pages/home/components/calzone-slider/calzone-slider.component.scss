@@ -1,0 +1,41 @@
+
+
+.horizontal-list {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.horizontal-list::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-list .box-region {
+  display: inline-block;
+  width: auto;
+  max-width: 250px;
+}
+
+.image-img {
+  max-width: 120px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ion-spinner {
+  width: 100px;
+  height: 100px;
+}
+
+.box-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+}
+
+ion-card-title {
+  white-space: nowrap; /* Evita que el texto se envuelva en varias líneas */
+  overflow: hidden; /* Oculta el texto que se desborda */
+  text-overflow: ellipsis; /* Agrega los 3 puntos (...) */
+}

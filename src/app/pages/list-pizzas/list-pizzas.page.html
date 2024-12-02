@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true">
+  @if (pizzas) {
+  <ion-card>
+    <ion-button (click)="pushRouter('/home')" expand="full" fill="clear">
+      Atras
+    </ion-button>
+  </ion-card>
+  <div>
+    <ion-card>
+      <ion-searchbar
+        show-clear-button="focus"
+        animated="true"
+        placeholder="Buscar aqui..."
+        (ionInput)="filterPizzas($event)"
+      ></ion-searchbar>
+    </ion-card>
+  </div>
+  <div class="box-card">
+    @for (pizza of filteredPizzas; track $index) {
+
+    <ion-card (click)="pushDetails(pizza.id)">
+      <ion-card-content>
+        <img src="{{pizza.image}}" alt="{{pizza.nombre}}" />
+      </ion-card-content>
+      <ion-card-header>
+        <ion-card-title>{{pizza.nombre}}</ion-card-title>
+        @if (pizza.opciones.esDuo) {
+        <span style="color: cornflowerblue">Duo</span>
+        } @if (pizza.opciones.esCuatroEstaciones) {
+        <span style="color: cornflowerblue">Cuatro estaciones</span>
+        }
+      </ion-card-header>
+    </ion-card>
+
+    }
+  </div>
+  } @else {
+  <div class="spinner-box">
+    <ion-spinner></ion-spinner>
+  </div>
+  }
+</ion-content>

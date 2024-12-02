@@ -1,0 +1,22 @@
+ion-spinner {
+  width: 100px;
+  height: 100px;
+}
+
+.detalles-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.detalles-box img {
+  border-radius: 15px;
+}
+
+.box-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

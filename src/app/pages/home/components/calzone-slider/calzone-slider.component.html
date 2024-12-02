@@ -1,0 +1,62 @@
+@if (calzones) {
+
+<div class="box-home">
+  <ion-card>
+    <ion-card-title style="margin: 0">
+      <div style="display: flex; width: 100%; justify-content: space-between">
+        <ion-button fill="clear" (click)="pushRouter('/list-calzones')"
+          >calzones</ion-button
+        >
+        <ion-button fill="clear" slot="end" (click)="toggleVisibility()">
+          {{ isContentVisible ? "Ocultar" : "Ver" }}
+        </ion-button>
+      </div>
+    </ion-card-title>
+    @if (isContentVisible) {
+
+    <ion-card-content style="margin: 0">
+      <ion-list class="horizontal-list">
+        <ion-grid>
+          @for (calzone of calzones; track $index) {
+
+          <ion-card class="box-region" (click)="pushDetails(calzone.id)">
+            <ion-card-content>
+              <img
+                class="image-img"
+                src="{{ calzone.image }}"
+                alt="{{ calzone.nombre }}"
+              />
+            </ion-card-content>
+            <ion-card-header>
+              <ion-card-title style="max-width: 150px">{{ calzone.nombre }}</ion-card-title>
+              <!-- <ion-card-subtitle>{{"lagarto"}}</ion-card-subtitle> -->
+            </ion-card-header>
+          </ion-card>
+          }
+        </ion-grid>
+      </ion-list>
+    </ion-card-content>
+    }
+  </ion-card>
+</div>
+
+} @else {
+<ion-list class="horizontal-list" style="margin: 10px">
+  <ion-card class="skeleton-card" *ngFor="let _ of [1, 2]">
+    <ion-card-content style="min-width: 200px">
+      <ion-skeleton-text
+        animated
+        style="width: 100%; height: 60px; margin-bottom: 10px"
+      ></ion-skeleton-text>
+
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-card-header>
+
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-card-header>
+    </ion-card-content>
+  </ion-card>
+</ion-list>
+}

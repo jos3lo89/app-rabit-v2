@@ -1,0 +1,93 @@
+<ion-content [fullscreen]="true">
+  @if (user) {
+  <ion-card>
+    <ion-button (click)="pushRouter('/home')" expand="full" fill="clear">
+      Atras
+    </ion-button>
+  </ion-card>
+  <ion-card>
+    <ion-card-content
+      style="max-width: 350px; margin-left: auto; margin-right: auto"
+    >
+      <div class="detalles-box">
+        <div>
+          @if (user.photoURL) {
+
+          <img [src]="user.photoURL" alt="foto del usuario" />
+          } @else {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="66"
+            height="66"
+            viewBox="0 0 256 256"
+          >
+            <path
+              fill="#0284c7"
+              d="M172 120a44 44 0 1 1-44-44a44.05 44.05 0 0 1 44 44m60 8A104 104 0 1 1 128 24a104.11 104.11 0 0 1 104 104m-16 0a88.09 88.09 0 0 0-91.47-87.93C77.43 41.89 39.87 81.12 40 128.25a87.65 87.65 0 0 0 22.24 58.16A79.7 79.7 0 0 1 84 165.1a4 4 0 0 1 4.83.32a59.83 59.83 0 0 0 78.28 0a4 4 0 0 1 4.83-.32a79.7 79.7 0 0 1 21.79 21.31A87.62 87.62 0 0 0 216 128"
+            />
+          </svg>
+          }
+        </div>
+        <div>
+          <p>{{user.displayName}}</p>
+          <p>{{user.email}}</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <div class="detalles-box">
+        <ion-button fill="clear" (click)="logOut()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="50"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="#e11d48"
+              fill-rule="evenodd"
+              d="M6 2a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3zm10.293 5.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L18.586 13H10a1 1 0 1 1 0-2h8.586l-2.293-2.293a1 1 0 0 1 0-1.414"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  @if (user.email === "pma.mode.18@gmail.com") {
+
+  <ion-card class="box-btn">
+    <ion-button fill="clear" (click)="pushRouter('/private/add-pizza')">
+      Agregar pizza
+    </ion-button>
+  </ion-card>
+
+  <ion-card class="box-btn">
+    <ion-button fill="clear" (click)="pushRouter('/private/add-drink')">
+      Agregar bebida
+    </ion-button>
+  </ion-card>
+  <ion-card class="box-btn">
+    <ion-button fill="clear" (click)="pushRouter('/private/add-rolls')">
+      Agregar rolls
+    </ion-button>
+  </ion-card>
+  <ion-card class="box-btn">
+    <ion-button fill="clear" (click)="pushRouter('/private/add-calzone')">
+      Agregar Calzone
+    </ion-button>
+  </ion-card>
+  <ion-card class="box-btn">
+    <ion-button fill="clear" (click)="pushRouter('/private/add-extras')">
+      Agregar Extras
+    </ion-button>
+  </ion-card>
+
+  } } @else {
+  <ion-spinner></ion-spinner>
+  }
+</ion-content>

@@ -1,0 +1,85 @@
+@if (rolls) {
+
+<div class="box-home">
+  <ion-card>
+    <ion-card-title style="margin: 0">
+      <div style="display: flex; width: 100%; justify-content: space-between">
+        <ion-button fill="clear" (click)="pushRouter('/list-rolls')"
+          >Rolls</ion-button
+        >
+        <ion-button fill="clear" slot="end" (click)="toggleVisibility()">
+          {{ isContentVisible ? "Ocultar" : "Ver" }}
+        </ion-button>
+      </div>
+    </ion-card-title>
+    @if (isContentVisible) {
+
+    <ion-card-content style="margin: 0">
+      <ion-list class="horizontal-list">
+        <ion-grid>
+          @for (roll of rolls; track $index) {
+
+<<<<<<< HEAD
+          <ion-card class="box-region" (click)="pushDetails(roll.id)">
+            <ion-card-content>
+              <img
+                class="image-img"
+                src="{{ roll.image }}"
+                alt="{{ roll.nombre }}"
+              />
+            </ion-card-content>
+            <ion-card-header>
+              <ion-card-title>{{ roll.nombre }}</ion-card-title>
+              <!-- <ion-card-subtitle>{{"lagarto"}}</ion-card-subtitle> -->
+            </ion-card-header>
+          </ion-card>
+          }
+        </ion-grid>
+      </ion-list>
+    </ion-card-content>
+    }
+  </ion-card>
+</div>
+=======
+            <ion-card class="box-region" (click)="pushDetails(roll.id)">
+              <ion-card-content>
+                <img
+                  class="image-img"
+                  src="{{ roll.image }}"
+                  alt="{{ roll.nombre }}"
+                />
+              </ion-card-content>
+              <ion-card-header>
+                <ion-card-title style="max-width: 150px">{{ roll.nombre }}</ion-card-title>
+                <!-- <ion-card-subtitle>{{"lagarto"}}</ion-card-subtitle> -->
+              </ion-card-header>
+            </ion-card>
+            }
+          </ion-grid>
+        </ion-list>
+      </ion-card-content>
+      }
+    </ion-card>
+  </div>
+>>>>>>> a23384715eb76a719824f8bb573264666d011579
+
+} @else {
+<ion-list class="horizontal-list" style="margin: 10px">
+  <ion-card class="skeleton-card" *ngFor="let _ of [1, 2]">
+    <ion-card-content style="min-width: 200px">
+      <ion-skeleton-text
+        animated
+        style="width: 100%; height: 60px; margin-bottom: 10px"
+      ></ion-skeleton-text>
+
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-card-header>
+
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-card-header>
+    </ion-card-content>
+  </ion-card>
+</ion-list>
+}

@@ -1,0 +1,127 @@
+.box-img {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+
+  .img-detalles {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+  }
+}
+
+.form-box {
+  margin: 1rem 0;
+}
+
+ion-card {
+  margin: 0.5rem 0;
+}
+
+.quantity-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+
+  span {
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+.box-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.img-pizza-details {
+  max-width: 200px;
+  height: auto;
+  border-radius: 15px;
+  // margin-left: auto;
+  // margin-right: auto;
+}
+
+.box-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.box-type {
+  display: flex;
+  // flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 70px;
+
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.box-type .box-text {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  // gap: 7px;
+}
+
+.precios-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.btns-precios {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detalles-card-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  // padding: 15px;
+}
+
+.detalles-card-box .detalle-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  justify-content: center;
+  align-items: center;
+}
+
+.detalles-card-box .detalle-card p {
+  color: #f3c623;
+}
+
+.box-price-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

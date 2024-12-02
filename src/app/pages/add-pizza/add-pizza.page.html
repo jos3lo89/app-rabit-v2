@@ -1,0 +1,203 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="box-btn">
+    <ion-button fill="clear" size="full" (click)="pushRouter('/private/profile')">
+      Ir atrás
+    </ion-button>
+  </ion-card>
+
+  <ion-title size="large" style="text-align: center">Agregar pizza</ion-title>
+
+  <ion-card class="box-form">
+    <form [formGroup]="form" (ngSubmit)="guardarPizza()" style="padding: 10px">
+      <ion-input
+        formControlName="nombre"
+        label="Nombre"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ingrese el nombre"
+      ></ion-input>
+      <br />
+      <ion-textarea
+        formControlName="descripcion"
+        label="Descripción"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ingrese la descripción"
+      ></ion-textarea>
+      <br />
+
+      <ion-select
+        label="Descuento"
+        label-placement="floating"
+        formControlName="descuento"
+      >
+        <ion-select-option value="0.0">Sin descuento</ion-select-option>
+        <ion-select-option value="0.1">10%</ion-select-option>
+        <ion-select-option value="0.2">20%</ion-select-option>
+        <ion-select-option value="0.3">30%</ion-select-option>
+      </ion-select>
+
+      <br />
+
+      <div class="form-box-title">
+        <ion-title>Precio por tamaño</ion-title>
+      </div>
+      <div formGroupName="tamanosPrecios" class="box-prices">
+        <ion-input
+          formControlName="familiar"
+          label-placement="floating"
+          label="Familiar (S/) : "
+          type="number"
+        ></ion-input>
+        <ion-input
+          formControlName="mediana"
+          label="Mediana (S/) : "
+          label-placement="floating"
+          type="number"
+        ></ion-input>
+        <ion-input
+          formControlName="personal"
+          label="Personal (S/) : "
+          label-placement="floating"
+          type="number"
+        ></ion-input>
+      </div>
+      <br />
+
+      <div class="form-box-title">
+        <ion-title size="large">Opciones</ion-title>
+      </div>
+      <div formGroupName="opciones">
+        <!-- Cambio de Masa -->
+        <div>
+          <ion-item>
+            <ion-label>
+              <h2>Cambio de Masa</h2>
+              <p class="descripcion">
+                Selecciona si deseas cambiar el tipo de masa.
+              </p>
+            </ion-label>
+            <ion-toggle formControlName="cambioDeMasa" slot="end"></ion-toggle>
+          </ion-item>
+        </div>
+
+        <!-- Cambio de Sabor -->
+        <div>
+          <ion-item>
+            <ion-label>
+              <h2>Cambio de Sabor</h2>
+              <p class="descripcion">Selecciona si deseas cambiar el sabor.</p>
+            </ion-label>
+            <ion-toggle formControlName="cambioSabor" slot="end"></ion-toggle>
+          </ion-item>
+        </div>
+
+        <!-- Entero -->
+        <div>
+          <ion-item>
+            <ion-label>
+              <h2>Entero</h2>
+              <p class="descripcion">Selecciona si deseas una pizza entera.</p>
+            </ion-label>
+            <ion-toggle
+              slot="end"
+              formControlName="esEntero"
+              (ionChange)="actualizarOpciones('esEntero')"
+            ></ion-toggle>
+          </ion-item>
+        </div>
+
+        <!-- Dúo -->
+        <div>
+          <ion-item>
+            <ion-label>
+              <h2>Dúo</h2>
+              <p class="descripcion">
+                Selecciona si deseas dos sabores en una pizza.
+              </p>
+            </ion-label>
+            <ion-toggle
+              slot="end"
+              formControlName="esDuo"
+              (ionChange)="actualizarOpciones('esDuo')"
+            ></ion-toggle>
+          </ion-item>
+        </div>
+
+        <!-- Cuatro Estaciones -->
+        <div>
+          <ion-item>
+            <ion-label>
+              <h2>Cuatro Estaciones</h2>
+              <p class="descripcion">
+                Selecciona si deseas dividir la pizza en cuatro sabores.
+              </p>
+            </ion-label>
+            <ion-toggle
+              slot="end"
+              formControlName="esCuatroEstaciones"
+              (ionChange)="actualizarOpciones('esCuatroEstaciones')"
+            ></ion-toggle>
+          </ion-item>
+        </div>
+      </div>
+
+      <br />
+      @if (!fotoPizza) {
+
+      <ion-button color="tertiary" (click)="openModal2()"
+        >Agregar foto</ion-button
+      >
+      } @else {
+
+      <div>
+        <ion-card>
+          <img [src]="fotoPizza" alt="Foto de la pizza" />
+        </ion-card>
+      </div>
+
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px;
+        "
+      >
+        <ion-button (click)="quitarFoto()" color="warning"
+          >Quitar foto</ion-button
+        >
+      </div>
+      }
+
+      <ion-modal [isOpen]="openModal">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Seleccionar imagen</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="closeModal()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <ion-button expand="block" (click)="takeImage(CameraSource.Camera)">
+              <ion-icon name="camera" slot="start"></ion-icon>
+              Tomar foto
+            </ion-button>
+            <ion-button expand="block" (click)="takeImage(CameraSource.Photos)">
+              <ion-icon name="image" slot="start"></ion-icon>
+              Seleccionar de galería
+            </ion-button>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+      <ion-button color="secondary" type="submit">
+        {{ guardando ? 'Guardando...' : 'Guardar' }}
+      </ion-button>
+    </form>
+  </ion-card>
+</ion-content>

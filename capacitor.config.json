@@ -1,0 +1,6 @@
+{
+  "appId": "com.rabit.tuapp",
+  "appName": "rabit",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

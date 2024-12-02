@@ -1,0 +1,26 @@
+.box-card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px; /* Espaciado entre las columnas */
+}
+
+.box-card ion-card {
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ion-spinner {
+  width: 100px;
+  height: 100px;
+}
+
+.spinner-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
