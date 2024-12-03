@@ -15,7 +15,7 @@ import { CartBtnComponent } from '../cart-btn/cart-btn.component';
   imports: [IonButtons, IonToolbar, IonHeader, CartBtnComponent, IonMenuButton],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

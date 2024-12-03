@@ -1,12 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonButton } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-google-btn',
   templateUrl: './google-btn.component.html',
   styleUrls: ['./google-btn.component.scss'],
   standalone: true,
-  imports: [IonicModule],
+  imports: [IonButton, CommonModule],
 })
 export class GoogleBtnComponent implements OnInit {
   @Output() clickMe = new EventEmitter<void>();
@@ -14,7 +15,7 @@ export class GoogleBtnComponent implements OnInit {
   handleClick() {
     this.clickMe.emit();
   }
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

@@ -11,6 +11,7 @@
       [src]="pizza.image"
       alt="{{ pizza.nombre }}"
       class="img-pizza-details"
+      style="max-height: 150px; width: auto"
     />
   </ion-card>
 
@@ -55,7 +56,10 @@
   </ion-card>
   }
 
-  <ion-card class="box-price-select">
+  <ion-card
+    class="box-price-select"
+    style="margin-left: 10px; margin-right: 10px"
+  >
     <ion-select
       style="max-width: 150px"
       label="Precio"
@@ -70,35 +74,61 @@
   </ion-card>
 
   @if (pizza.opciones.esDuo) {
-  <ion-card>
-    <ion-card-header style="text-align: center">
+  <ion-card
+    style="
+      margin-left: 10px;
+      margin-right: 10px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    "
+  >
+    <ion-card-header>
       <ion-card-title>Seleccione las 2 mitades</ion-card-title>
     </ion-card-header>
-    <div style="display: flex; justify-content: center">
+    <div *ngFor="let _ of [0, 1]; let i = index" class="option-container">
       <ion-select
-        style="max-width: 150px"
-        label="Primer mitad"
-        labelPlacement="floating"
+        placeholder="Seleccionar opción"
+        (ionChange)="onCombinationChange(i, $event.detail.value)"
       >
-        @for (opt of opcionesDuo; track $index) {
-        <ion-select-option value="{{opt}}">{{opt}}</ion-select-option>
-        }
-      </ion-select>
-    </div>
-    <div style="display: flex; justify-content: center">
-      <ion-select
-        style="max-width: 150px"
-        label="segunda midad"
-        labelPlacement="floating"
-      >
-        @for (opt of opcionesDuo; track $index) {
-        <ion-select-option value="{{opt}}">{{opt}}</ion-select-option>
-        }
+        <ion-select-option *ngFor="let opt of opcionesDuo" [value]="opt">
+          {{ opt }}
+        </ion-select-option>
       </ion-select>
     </div>
   </ion-card>
   } @if (pizza.opciones.esCuatroEstaciones) {
-  <ion-card>
+
+  <ion-card
+    style="
+      margin-left: 10px;
+      margin-right: 10px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    "
+  >
+    <ion-card-header>
+      <ion-card-title>Seleccione las 4 estaciones</ion-card-title>
+    </ion-card-header>
+    <div *ngFor="let _ of [0, 1, 2, 3]; let i = index" class="option-container">
+      <ion-select
+        placeholder="Seleccionar opción"
+        (ionChange)="onCombinationChange(i, $event.detail.value)"
+      >
+        <ion-select-option
+          *ngFor="let opt of opcionesCuatroEstaciones"
+          [value]="opt"
+        >
+          {{ opt }}
+        </ion-select-option>
+      </ion-select>
+    </div>
+  </ion-card>
+
+  <!-- <ion-card style="margin-left: 10px; margin-right: 10px;">
     <ion-card-header style="text-align: center">
       <ion-card-title>Seleccione las 4 estaciones</ion-card-title>
     </ion-card-header>
@@ -150,10 +180,10 @@
         }
       </ion-select>
     </div>
-  </ion-card>
+  </ion-card> -->
   }
 
-  <ion-card>
+  <ion-card style="margin-left: 10px; margin-right: 10px">
     <div class="precios-box">
       <div class="detalles-card-box">
         <div class="detalle-card">

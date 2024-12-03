@@ -108,8 +108,8 @@ export class DetailsCalzonePage implements OnInit {
     }
     if (!this.calzone) return;
 
-    const loading = await this._loadingService.loading();
-    await loading.present();
+    // const loading = await this._loadingService.loading();
+    // await loading.present();
 
     try {
       this.addToCartLoading = true;
@@ -125,11 +125,11 @@ export class DetailsCalzonePage implements OnInit {
         precioUnidad: this.precioUnitario,
       });
 
-      if (!result) {
-        this._toast.getToast('Error al añadir null', 'middle', 'warning');
-      }
+      // if (!result) {
+      //   this._toast.getToast('Error al añadir null', 'middle', 'warning');
+      // }
 
-      this._toast.getToast('Calzone agregado al carrito', 'middle', 'success');
+      // this._toast.getToast('Calzone agregado al carrito', 'middle', 'success');
 
       this.addToCartLoading = false;
     } catch (error) {
@@ -137,7 +137,7 @@ export class DetailsCalzonePage implements OnInit {
       console.log(error);
       this._toast.getToast('Error al añadir', 'middle', 'warning');
     } finally {
-      loading.dismiss();
+      // loading.dismiss();
     }
   }
 }

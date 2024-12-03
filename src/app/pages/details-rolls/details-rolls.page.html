@@ -7,7 +7,12 @@
   @if (roll) {
 
   <ion-card class="box-img">
-    <img [src]="roll.image" alt="{{ roll.nombre }}" class="img-roll-details" />
+    <img
+      [src]="roll.image"
+      alt="{{ roll.nombre }}"
+      class="img-roll-details"
+      style="max-height: 150px; width: auto"
+    />
   </ion-card>
 
   <ion-card class="box-details">

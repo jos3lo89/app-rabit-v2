@@ -6,7 +6,13 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { ExtrasService } from 'src/app/shared/services/extras.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { ExtrasDb } from 'src/app/shared/interfaces/extras.interfaces';
-import { IonText, IonContent, IonCard, IonButton, IonCardTitle } from '@ionic/angular/standalone';
+import {
+  IonText,
+  IonContent,
+  IonCard,
+  IonButton,
+  IonCardTitle,
+} from '@ionic/angular/standalone';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
 
@@ -15,7 +21,15 @@ import { LoadingService } from 'src/app/shared/services/loading.service';
   templateUrl: './details-extras.page.html',
   styleUrls: ['./details-extras.page.scss'],
   standalone: true,
-  imports: [IonCardTitle, IonButton, IonCard, IonContent, IonText,  CommonModule, FormsModule],
+  imports: [
+    IonCardTitle,
+    IonButton,
+    IonCard,
+    IonContent,
+    IonText,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class DetailsExtrasPage implements OnInit {
   private _activatedRoute = inject(ActivatedRoute);
@@ -49,8 +63,8 @@ export class DetailsExtrasPage implements OnInit {
     }
     if (!this.extras) return;
 
-    const loading = await this._loadingService.loading();
-    await loading.present();
+    // const loading = await this._loadingService.loading();
+    // await loading.present();
 
     try {
       this.addToCartLoading = true;
@@ -66,11 +80,11 @@ export class DetailsExtrasPage implements OnInit {
         precioUnidad: this.precioUnitario,
       });
 
-      if (!result) {
-        this._toast.getToast('Error al añadir null', 'middle', 'warning');
-      }
+      // if (!result) {
+      //   this._toast.getToast('Error al añadir null', 'middle', 'warning');
+      // }
 
-      this._toast.getToast('Extra agregado al carrito', 'middle', 'success');
+      // this._toast.getToast('Extra agregado al carrito', 'middle', 'success');
 
       this.addToCartLoading = false;
     } catch (error) {
@@ -78,7 +92,7 @@ export class DetailsExtrasPage implements OnInit {
       console.log(error);
       this._toast.getToast('Error al añadir', 'middle', 'warning');
     } finally {
-      loading.dismiss();
+      // loading.dismiss();
     }
   }
 

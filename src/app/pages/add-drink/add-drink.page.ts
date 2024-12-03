@@ -30,7 +30,6 @@ import { ToastService } from 'src/app/shared/services/toast.service';
   imports: [
     IonIcon,
     IonInput,
-    IonTextarea,
     IonHeader,
     IonToolbar,
     IonButtons,

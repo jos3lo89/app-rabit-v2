@@ -17,9 +17,13 @@
     <div
       style="display: flex; justify-content: space-around; align-items: center"
     >
-      <div>
+      <div (click)="pushRouter(item.id)">
         <!-- <ion-thumbnail> -->
-          <img [src]="item.imagen" alt="Imagen del producto" style="max-width: 100px;" />
+        <img
+          [src]="item.imagen"
+          alt="Imagen del producto"
+          style="max-width: 100px"
+        />
         <!-- </ion-thumbnail> -->
       </div>
       <div style="display: flex; flex-direction: column">

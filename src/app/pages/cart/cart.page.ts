@@ -21,6 +21,7 @@ import {
   trashOutline,
 } from 'ionicons/icons';
 import { PdfService } from 'src/app/shared/services/pdf.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -36,18 +37,23 @@ import { PdfService } from 'src/app/shared/services/pdf.service';
     IonCard,
     IonContent,
     CommonModule,
-    IonThumbnail,
   ],
 })
 export class CartPage implements OnInit {
   private _authService = inject(AuthService);
   private _cartService = inject(CartService);
   private _pdfService = inject(PdfService);
+  private _router = inject(Router);
 
   currentUser: User | null = null;
   cartItems: CartDb[] | null = null;
   isUpdating: boolean = false;
   precioTotalFinal: number | null = null;
+
+  pushRouter(route: string) {
+    // this._router.navigateByUrl(route);
+    console.log(route);
+  }
 
   constructor() {
     addIcons({ addCircleOutline, removeCircleOutline, trashOutline });
@@ -98,7 +104,11 @@ export class CartPage implements OnInit {
     item.precioTotal = item.precioUnidad * item.cantidad;
     this.calcularPrecioTotal();
     try {
-      await this._cartService.updateItemQuantity(item, action);
+      await this._cartService.updateItemQuantity(
+        item.idItem,
+        item.idUser,
+        action
+      );
     } catch (error) {
       console.error('Error al actualizar la cantidad en Firestore:', error);
     } finally {

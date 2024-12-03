@@ -17,6 +17,8 @@ type Position = 'top' | 'middle' | 'bottom';
 export class ToastService {
   private _toast = inject(ToastController);
 
+  constructor() {}
+
   async getToast(message: string, position: Position, color: Color) {
     const toast = await this._toast.create({
       message,
@@ -27,5 +29,4 @@ export class ToastService {
 
     await toast.present();
   }
-  constructor() {}
 }

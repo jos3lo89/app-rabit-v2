@@ -11,6 +11,8 @@
       [src]="extras.image"
       alt="{{ extras.nombre }}"
       class="img-extras-details"
+      style="max-height: 150px; width: auto;"
+
     />
   </ion-card>
 
@@ -18,7 +20,7 @@
     <ion-card-title style="color: cornflowerblue"
       >{{ extras.nombre }}</ion-card-title
     >
-    <ion-text>{{extras.descripcion}}</ion-text>
+    <ion-text style="margin-left: 10px;">{{extras.descripcion}}</ion-text>
   </ion-card>
 
   <ion-card>
@@ -62,7 +64,7 @@
 
   <ion-card>
     <ion-button expand="block" (click)="addToCart()"
-      >Agregar al carrito</ion-button
+      >{{addToCartLoading ? "Agregando..." : "Agregar al carrito"}}</ion-button
     >
   </ion-card>
 

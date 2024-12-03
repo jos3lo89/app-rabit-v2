@@ -1,7 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonCard, IonButton, IonSearchbar, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSpinner } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonCard,
+  IonButton,
+  IonSearchbar,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonSpinner,
+} from '@ionic/angular/standalone';
 import { PizzaService } from 'src/app/shared/services/pizza.service';
 import { PizzaDb } from 'src/app/shared/interfaces/pizza.interfaces';
 import { NavigationExtras, Router } from '@angular/router';
@@ -12,7 +22,18 @@ import { CartService } from 'src/app/shared/services/cart.service';
   templateUrl: './list-pizzas.page.html',
   styleUrls: ['./list-pizzas.page.scss'],
   standalone: true,
-  imports: [IonSpinner, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCardContent, IonSearchbar, IonButton, IonCard, IonContent,  CommonModule, FormsModule],
+  imports: [
+    IonSpinner,
+    IonCardTitle,
+    IonCardHeader,
+    IonCardContent,
+    IonSearchbar,
+    IonButton,
+    IonCard,
+    IonContent,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class ListPizzasPage {
   private _pizzasService = inject(PizzaService);
@@ -66,6 +87,4 @@ export class ListPizzasPage {
   pushRouter(route: string) {
     this._router.navigateByUrl(route);
   }
-
-
 }

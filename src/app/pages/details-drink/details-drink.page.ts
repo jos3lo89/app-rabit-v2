@@ -107,8 +107,8 @@ export class DetailsDrinkPage implements OnInit {
     }
     if (!this.drink) return;
 
-    const loading = await this._loadingService.loading();
-    await loading.present();
+    // const loading = await this._loadingService.loading();
+    // await loading.present();
 
     try {
       this.addToCartLoading = true;
@@ -124,11 +124,11 @@ export class DetailsDrinkPage implements OnInit {
         precioUnidad: this.precioUnitario,
       });
 
-      if (!result) {
-        this._toast.getToast('Error al añadir null', 'middle', 'warning');
-      }
+      // if (!result) {
+      //   this._toast.getToast('Error al añadir null', 'middle', 'warning');
+      // }
 
-      this._toast.getToast('Bebida agregado al carrito', 'middle', 'success');
+      // this._toast.getToast('Bebida agregado al carrito', 'middle', 'success');
 
       this.addToCartLoading = false;
     } catch (error) {
@@ -136,7 +136,7 @@ export class DetailsDrinkPage implements OnInit {
       console.log(error);
       this._toast.getToast('Error al añadir', 'middle', 'warning');
     } finally {
-      loading.dismiss();
+      // loading.dismiss();
     }
   }
 }

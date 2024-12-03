@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-<<<<<<< HEAD
 import {
   FormBuilder,
   FormsModule,
@@ -21,11 +20,6 @@ import {
   IonButtons,
   IonIcon,
 } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
-=======
-
-import { IonicModule } from '@ionic/angular';
->>>>>>> a23384715eb76a719824f8bb573264666d011579
 import { CameraSource } from '@capacitor/camera';
 import { UploadImageService } from 'src/app/shared/services/upload-image.service';
 import { addIcons } from 'ionicons';
@@ -34,12 +28,6 @@ import { ExtrasService } from 'src/app/shared/services/extras.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, inject } from '@angular/core';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
 
 @Component({
   selector: 'app-add-extras',
@@ -91,7 +79,7 @@ export class AddExtrasPage implements OnInit {
     this.closeModal();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   async addExtras() {
     try {

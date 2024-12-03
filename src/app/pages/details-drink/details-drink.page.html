@@ -11,6 +11,7 @@
       [src]="drink.image"
       alt="{{ drink.nombre }}"
       class="img-drink-details"
+      style="max-height: 150px; width: auto;"
     />
   </ion-card>
 
@@ -62,7 +63,7 @@
 
   <ion-card>
     <ion-button expand="block" (click)="addToCart()"
-      >Agregar al carrito</ion-button
+      >{{addToCartLoading ? "Agregando...": "Agregar al carrito"}}</ion-button
     >
   </ion-card>
 

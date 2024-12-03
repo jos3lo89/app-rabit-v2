@@ -21,6 +21,14 @@ export class AuthService {
 
   constructor() {}
 
+  get authState$(): Observable<User | null> {
+    return authState(this._auht);
+  }
+
+  async cerrarSesion() {
+    await this._auht.signOut();
+  }
+
   async registrar(user: UserRegister) {
     const newUser = await createUserWithEmailAndPassword(
       this._auht,
@@ -46,16 +54,8 @@ export class AuthService {
     );
   }
 
-  get authState$(): Observable<User | null> {
-    return authState(this._auht);
-  }
-
   async loginWithGoogle() {
     const googleProvider = new GoogleAuthProvider();
     return await signInWithPopup(this._auht, googleProvider);
-  }
-
-  async cerrarSesion() {
-    await this._auht.signOut();
   }
 }

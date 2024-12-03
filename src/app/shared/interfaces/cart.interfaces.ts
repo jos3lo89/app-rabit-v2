@@ -17,6 +17,7 @@ export interface PizzaDetails {
   esEntero: boolean;
   esDuo: boolean;
   esCuatroEstaciones: boolean;
+
 }
 
 export interface CartDb extends Cart {

@@ -1,6 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   IonContent,
   IonInput,
@@ -15,6 +21,8 @@ import {
   IonHeader,
   IonButtons,
   IonIcon,
+  IonSelect,
+  IonToggle,
   IonSelectOption,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
@@ -24,7 +32,6 @@ import { camera, close, image } from 'ionicons/icons';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { UploadImageService } from 'src/app/shared/services/upload-image.service';
 import { PizzaService } from 'src/app/shared/services/pizza.service';
-import { fb, fb2 } from './utils/pizzaForm';
 
 @Component({
   selector: 'app-add-pizza',
@@ -35,10 +42,12 @@ import { fb, fb2 } from './utils/pizzaForm';
     IonIcon,
     IonTextarea,
     IonButtons,
+    IonSelect,
     IonHeader,
     IonToolbar,
     IonModal,
     IonLabel,
+    IonToggle,
     IonInput,
     IonItem,
     IonTitle,
@@ -58,12 +67,29 @@ export class AddPizzaPage implements OnInit {
   private _toast = inject(ToastService);
   private _uploadImageService = inject(UploadImageService);
   private _pizzaService = inject(PizzaService);
+  private _fb = inject(FormBuilder);
 
   fotoPizza: string | null = null;
   openModal = false;
   CameraSource = CameraSource;
   guardando = false;
-  form = fb2();
+  form = this._fb.group({
+    nombre: this._fb.control('', [Validators.required]),
+    descripcion: this._fb.control('', [Validators.required]),
+    descuento: this._fb.control('0.0', [Validators.required]),
+    tamanosPrecios: this._fb.group({
+      familiar: this._fb.control(null, Validators.required),
+      mediana: this._fb.control(null, Validators.required),
+      personal: this._fb.control(null, Validators.required),
+    }),
+    opciones: this._fb.group({
+      cambioDeMasa: this._fb.control(true),
+      cambioSabor: this._fb.control(true),
+      esEntero: this._fb.control(true),
+      esDuo: this._fb.control(false),
+      esCuatroEstaciones: this._fb.control(false),
+    }),
+  });
 
   constructor() {
     addIcons({ camera, image, close });

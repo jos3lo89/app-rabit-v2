@@ -16,6 +16,7 @@ import {
   IonButton,
   IonInput,
   IonSpinner,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
@@ -37,6 +38,7 @@ import { LoadingService } from 'src/app/shared/services/loading.service';
     IonCardHeader,
     IonCard,
     IonContent,
+    IonInput,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -49,8 +51,10 @@ export default class LoginPage implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _authService = inject(AuthService);
   private _router = inject(Router);
-  private _toast = inject(ToastService);
+  // private _toast = inject(ToastService);
   private _loadingService = inject(LoadingService);
+
+  private _toastController = inject(ToastController);
 
   constructor() {}
 
@@ -75,10 +79,10 @@ export default class LoginPage implements OnInit {
     const { email, password } = this.form.value;
     if (!email || !password) return;
 
-    const loading = await this._loadingService.loading();
-    await loading.present();
+    // const loading = await this._loadingService.loading();
+    // await loading.present();
     try {
-      // this.isLoadingBtnSubmit = true;
+      this.isLoadingBtnSubmit = true;
 
       const user = await this._authService.login({
         email,
@@ -86,22 +90,44 @@ export default class LoginPage implements OnInit {
       });
 
       this._router.navigateByUrl('/home');
-      // this.isLoadingBtnSubmit = false;
-      this._toast.getToast(
-        `Vienvenido ${
+      this.isLoadingBtnSubmit = false;
+
+      // this._toast.getToast(
+      //   `Vienvenido ${user.user.displayName ? user.user.displayName : user.user.email
+      //   }`,
+      //   'middle',
+      //   'success'
+      // );
+
+      const toast = await this._toastController.create({
+        message: `Vienvenido ${
           user.user.displayName ? user.user.displayName : user.user.email
         }`,
-        'middle',
-        'success'
-      );
+        duration: 1500,
+        position: 'middle',
+        color: 'success',
+      });
+
+      await toast.present();
+
       this.form.reset();
-      loading.dismiss();
+      // loading.dismiss();
     } catch (error) {
       console.log(error);
-      this._toast.getToast('Error al iniciar sesión', 'middle', 'danger');
-      // this.isLoadingBtnSubmit = false;
+      // this._toast.getToast('Error al iniciar sesión', 'middle', 'danger');
 
-      loading.dismiss();
+      const toast = await this._toastController.create({
+        message: 'Error al iniciar sesión',
+        duration: 1500,
+        position: 'middle',
+        color: 'danger',
+      });
+
+      await toast.present();
+
+      this.isLoadingBtnSubmit = false;
+
+      // loading.dismiss();
     }
   }
 
@@ -110,16 +136,16 @@ export default class LoginPage implements OnInit {
       this.isLoadingGoogleBtn = true;
       const user = await this._authService.loginWithGoogle();
       this._router.navigateByUrl('/home');
-      this._toast.getToast(
-        `Vienvenido ${
-          user.user.displayName ? user.user.displayName : user.user.email
-        }`,
-        'middle',
-        'success'
-      );
+      // this._toast.getToast(
+      //   `Vienvenido ${
+      //     user.user.displayName ? user.user.displayName : user.user.email
+      //   }`,
+      //   'middle',
+      //   'success'
+      // );
       this.isLoadingGoogleBtn = false;
     } catch (error) {
-      this._toast.getToast('Error al iniciar sesión', 'middle', 'danger');
+      // this._toast.getToast('Error al iniciar sesión', 'middle', 'danger');
       console.log(error);
       this.isLoadingGoogleBtn = false;
     }

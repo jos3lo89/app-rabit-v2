@@ -50,13 +50,13 @@ export class DetailsRollsPage implements OnInit {
     }
     if (!this.roll) return;
 
-    const loading = await this._loadingService.loading();
-    await loading.present();
+    // const loading = await this._loadingService.loading();
+    // await loading.present();
 
     try {
       this.addToCartLoading = true;
 
-      const result = await this._cartService.addToCart({
+       await this._cartService.addToCart({
         cantidad: this.quantity,
         idItem: this.roll.id,
         descuento: 0.0,
@@ -67,19 +67,17 @@ export class DetailsRollsPage implements OnInit {
         precioUnidad: this.precioUnitario,
       });
 
-      if (!result) {
-        this._toast.getToast('Error al añadir null', 'middle', 'warning');
-      }
+      // if (!result) {
+      //   this._toast.getToast('Error al añadir null', 'middle', 'warning');
+      // }
 
-      this._toast.getToast('Roll agregado al carrito', 'middle', 'success');
+      // this._toast.getToast('Roll agregado al carrito', 'middle', 'success');
 
       this.addToCartLoading = false;
     } catch (error) {
       this.addToCartLoading = false;
       console.log(error);
       this._toast.getToast('Error al añadir', 'middle', 'warning');
-    } finally {
-      loading.dismiss();
     }
   }
 

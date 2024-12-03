@@ -15,6 +15,7 @@ import {
   IonList,
   IonButton,
   IonInput,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
@@ -27,6 +28,7 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./register.page.scss'],
   standalone: true,
   imports: [
+    IonSpinner,
     IonButton,
     IonList,
     IonCardContent,
@@ -47,6 +49,8 @@ export default class RegisterPage implements OnInit {
   private _fb = inject(FormBuilder);
   private _toastService = inject(ToastService);
 
+  isloadingSubmitBtn = false;
+
   public form = this._fb.group({
     email: this._fb.control('', [Validators.required, Validators.email]),
     password: this._fb.control('', [Validators.required]),
@@ -66,8 +70,8 @@ export default class RegisterPage implements OnInit {
       return;
     }
 
-    const loading = await this._loadinService.loading();
-    await loading.present();
+    // const loading = await this._loadinService.loading();
+    // await loading.present();
 
     try {
       const { email, password, apellido, nombre } = this.form.value;
@@ -76,6 +80,8 @@ export default class RegisterPage implements OnInit {
 
         return;
       }
+
+      this.isloadingSubmitBtn = true;
 
       await this._authService.registrar({
         email,
@@ -87,10 +93,13 @@ export default class RegisterPage implements OnInit {
 
       this._toastService.getToast('Registrado correctamente', 'top', 'success');
       this.form.reset();
+
+      this.isloadingSubmitBtn = false;
     } catch (error) {
       console.log(error);
+      this.isloadingSubmitBtn = false;
     } finally {
-      loading.dismiss();
+      // loading.dismiss();
     }
   }
 }
