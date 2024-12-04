@@ -1,0 +1,118 @@
+<ion-content>
+  <ion-card class="box-btn">
+    <ion-button
+      fill="clear"
+      size="full"
+      (click)="pushRouter('/private/profile')"
+    >
+      Ir atras
+    </ion-button>
+  </ion-card>
+
+  <ion-card-title style="color: cornflowerblue; text-align: center;"
+    >Historial de Tickets</ion-card-title
+  >
+
+  <ion-grid>
+    <ion-row class="">
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+              align-items: center;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                justify-content: space-around;
+                align-items: center;
+                width: 100%;
+              "
+            >
+              <!-- <ion-text>Fecha de inicio</ion-text> -->
+              <ion-text>Seleciona la fecha</ion-text>
+              <!-- <ion-text>Fecha de fin</ion-text> -->
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                justify-content: space-around;
+                width: 100%;
+              "
+            >
+              <ion-button id="open-modal"> {{startDate}} </ion-button>
+              <!-- <ion-button id="open-modal2"> {{endDate}} </ion-button> -->
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-modal trigger="open-modal" cssClass="small-modal">
+              <ng-template>
+                <ion-datetime
+                  #datetime
+                  size="cover"
+                  presentation="date"
+                  [(ngModel)]="startDate"
+                ></ion-datetime>
+              </ng-template>
+            </ion-modal>
+            <!-- <ion-modal trigger="open-modal2" cssClass="small-modal">
+              <ng-template>
+                <ion-datetime
+                  #datetime
+                  size="cover"
+                  presentation="date"
+                  [(ngModel)]="endDate"
+                ></ion-datetime>
+              </ng-template>
+            </ion-modal> -->
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-button expand="block" (click)="fetchTickets()">
+            Buscar
+          </ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-padding">
+      <ion-col size="12">
+        <ion-card *ngIf="tickets.length > 0">
+          <ion-card-header style="text-align: center">
+            <ion-card-title>Tickets encontrados</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngFor="let ticket of tickets">
+                <ion-label>
+                  <h3>Fecha: {{ formatDate(ticket.date) }}</h3>
+                  <p>Total: {{ ticket.totalAmount }}</p>
+                </ion-label>
+                <ion-button
+                  slot="end"
+                  fill="clear"
+                  (click)="reprintTicket(ticket)"
+                >
+                  <ion-icon name="print-outline"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card *ngIf="tickets.length === 0">
+          <ion-card-content>
+            <p>No se encontraron tickets en el rango de fechas seleccionado.</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

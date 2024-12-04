@@ -7,15 +7,13 @@ import {
   Firestore,
   getDocs,
   limit,
-  onSnapshot,
   query,
   updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { Cart, CartDb } from '../interfaces/cart.interfaces';
+import { Cart, CartDb, ProductoCart } from '../interfaces/cart.interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ToastController } from '@ionic/angular';
 import { ToastService } from './toast.service';
 
 @Injectable({
@@ -24,46 +22,38 @@ import { ToastService } from './toast.service';
 export class CartService {
   private _fireStore = inject(Firestore);
   private _authService = inject(AuthService);
-  private _toastController = inject(ToastController); // new added
+  private _toastService = inject(ToastService);
+
   private _collName = 'cart';
   private _isAuth = false;
-  private _currentUserId: string | null = null;
-
-  private _toastService = inject(ToastService);
 
   private _cartCount$ = new BehaviorSubject<number>(0);
 
   public readonly cartCount$ = this._cartCount$.asObservable();
 
-  /* ---------- signaal */
-  private _currentUserId2 = signal<string | null>(null); // Usuario actual
-
+  private _currentUserId = signal<string | null>(null);
   private _cartItems = signal<CartDb[]>([]);
-
   public cartCount: Signal<number> = computed(() => this._cartItems().length);
-
-  /* ---------- signaal */
 
   constructor() {
     this._authService.authState$.subscribe({
       next: (data) => {
         if (data) {
           this._isAuth = true;
-          this._currentUserId = data.uid; // Obtener el id del usuario autenticado
-          this._currentUserId2.set(data.uid);
+          this._currentUserId.set(data.uid);
 
-          this.loadCartItems(); // Cargar los ítems del carrito para el usuario actual
+          this.loadCartItems();
         } else {
-          this._cartCount$.next(0); // Reinicia el contador al cerrar sesión
-          this._currentUserId2.set(null);
-          this._cartItems.set([]); // Vaciar el carrito si no hay usuario autenticado
+          this._cartCount$.next(0);
+          this._currentUserId.set(null);
+          this._cartItems.set([]);
         }
       },
     });
   }
 
   private async loadCartItems() {
-    const userId = this._currentUserId2();
+    const userId = this._currentUserId();
     if (!userId) return;
 
     const collRef = collection(this._fireStore, 'cart');
@@ -75,28 +65,19 @@ export class CartService {
       ...doc.data(),
     })) as CartDb[];
 
-    this._cartItems.set(items); // Actualizar señal con los ítems cargados
+    this._cartItems.set(items);
   }
 
-  // Método para mostrar un Toast
-  // private async showToast(message: string) {
-  //   const toast = await this._toastController.create({
-  //     message,
-  //     duration: 2000,
-  //     position: 'top',
-  //   });
-  //   await toast.present();
-  // }
-
   async addToCart(data: Cart) {
-    if (!this._isAuth || !this._currentUserId || !this._currentUserId2()) {
+    const userId = this._currentUserId();
+
+    if (!this._isAuth || !userId) {
       console.log('Usuario no autenticado.');
       return null;
     }
 
-    /* ------------------------- */
     const existingItem = await this.getCartItemByUserAndItem(
-      this._currentUserId,
+      userId,
       data.idItem
     );
 
@@ -109,13 +90,12 @@ export class CartService {
       return;
     }
 
-    // Agregar nuevo producto al carrito
     const collRef = collection(this._fireStore, this._collName);
     const newItem = await addDoc(collRef, {
       ...data,
-      idUser: this._currentUserId,
+      idUser: userId,
     });
-    this.loadCartItems(); // Refrescar ítems después de agregar
+    this.loadCartItems();
 
     await this._toastService.getToast(
       'Producto agregado a tu carrito.',
@@ -124,20 +104,8 @@ export class CartService {
     );
 
     return newItem;
-    /* ------------------------- */
-
-    // const findItemWithId = await this.gettingCartItemWhitIdItem(data.idItem);
-
-    // if (findItemWithId) {
-    //   this.updateQuantityItemWithId(data.idItem);
-    //   return;
-    // }
-
-    // const collRef = collection(this._fireStore, this._collName);
-    // return await addDoc(collRef, data);
   }
 
-  // Buscar producto en el carrito por usuario e id del producto
   private async getCartItemByUserAndItem(idUser: string, idItem: string) {
     try {
       const collRef = collection(this._fireStore, this._collName);
@@ -155,107 +123,29 @@ export class CartService {
     }
   }
 
-  // Actualizar la cantidad de un producto en el carrito
   async updateItemQuantity(
     idItem: string,
     idUser: string,
     action: 'increase' | 'decrease'
   ) {
-    const cartItem = await this.getCartItemByUserAndItem(idUser, idItem);
-
-    if (cartItem) {
-      const docRef = doc(this._fireStore, `${this._collName}/${cartItem.id}`);
-      const currentData = cartItem.data();
-      let newQuantity = currentData['cantidad'] || 0;
-
-      if (action === 'increase') {
-        newQuantity += 1;
-      } else if (action === 'decrease' && newQuantity > 1) {
-        newQuantity -= 1;
-      }
-
-      await updateDoc(docRef, { cantidad: newQuantity });
-      console.log(`Cantidad actualizada: ${newQuantity}`);
-    }
-  }
-
-  // Obtener todos los productos del carrito por usuario
-  async getCartByUser(idUser: string) {
     try {
-      const collRef = collection(this._fireStore, this._collName);
-      const q = query(collRef, where('idUser', '==', idUser));
-      const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    } catch (error) {
-      console.error('Error al obtener el carrito:', error);
-      throw error;
-    }
-  }
+      const cartItem = await this.getCartItemByUserAndItem(idUser, idItem);
+      if (cartItem) {
+        const docRef = doc(this._fireStore, `${this._collName}/${cartItem.id}`);
+        const currentData = cartItem.data();
+        let newQuantity = currentData['cantidad'] || 0;
 
-  /* ----------------------------------------------------- */
-
-  // Eliminar un producto del carrito
-  async deleteCartItem(idItem: string) {
-    if (!this._currentUserId) {
-      console.log('Usuario no autenticado.');
-      return;
-    }
-
-    const cartItem = await this.getCartItemByUserAndItem(
-      this._currentUserId,
-      idItem
-    );
-
-    if (cartItem) {
-      const docRef = doc(this._fireStore, `${this._collName}/${cartItem.id}`);
-      await deleteDoc(docRef);
-      this.loadCartItems(); // Refrescar ítems después de agregar
-
-      console.log(`Producto eliminado: ${cartItem.id}`);
-    }
-  }
-
-  /* ----------------------------------------- */
-
-  async updateQuantityItemWithId(idItem: string) {
-    try {
-      const collRef = collection(this._fireStore, this._collName);
-      const q = query(collRef, where('idItem', '==', idItem), limit(1));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        const docSnap = querySnapshot.docs[0];
-        const docRef = doc(this._fireStore, this._collName, docSnap.id);
-
-        const currentData = docSnap.data();
-        const newQuantity = (currentData['cantidad'] || 0) + 1;
+        if (action === 'increase') {
+          newQuantity += 1;
+        } else if (action === 'decrease' && newQuantity > 1) {
+          newQuantity -= 1;
+        }
 
         await updateDoc(docRef, { cantidad: newQuantity });
-        this.loadCartItems(); // Refrescar ítems después de agregar
+        this.loadCartItems();
       }
     } catch (error) {
       console.error('Error al actualizar la cantidad:', error);
-      throw error;
-    }
-  }
-
-  async gettingCartItemWhitIdItem(idItem: string) {
-    try {
-      const collRef = collection(this._fireStore, this._collName);
-
-      const q = query(collRef, where('idItem', '==', idItem), limit(1));
-
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        const docSnapshot = querySnapshot.docs[0];
-        return { id: docSnapshot.id, ...docSnapshot.data() };
-      } else {
-        console.log('No se encontró ningún documento con ese idItem.');
-        return null;
-      }
-    } catch (error) {
-      console.error('Error obteniendo el documento:', error);
       throw error;
     }
   }
@@ -281,76 +171,147 @@ export class CartService {
     });
   }
 
-  async deleteCartItemMIO(idItem: string) {
-    const collRef = doc(this._fireStore, `${this._collName}/${idItem}`);
-
-    await deleteDoc(collRef);
-    this.loadCartItems(); // Refrescar ítems después de agregar
-  }
-
-  cartQuantity(idUser: string): Observable<number> {
-    const refCol = collection(this._fireStore, this._collName);
-    const q = query(refCol, where('idUser', '==', idUser));
-
-    return new Observable((observer) => {
-      const unsubscribe = onSnapshot(
-        q,
-        (querySnapshot) => {
-          const docsLength = querySnapshot.docs.length;
-          this._cartCount$.next(docsLength);
-
-          observer.next(docsLength);
-        },
-        (error) => {
-          observer.error(error);
-        }
-      );
-
-      return () => unsubscribe();
-    });
-  }
-
-  async updateItemQuantityMIO(item: CartDb, action: 'increase' | 'decrease') {
-    const collRef = collection(this._fireStore, this._collName);
-    const q = query(collRef, where('idItem', '==', item.idItem), limit(1));
-
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      const docSnap = querySnapshot.docs[0];
-      const docRef = doc(this._fireStore, this._collName, docSnap.id);
-
-      const currentData = docSnap.data();
-      let newQuantity = currentData['cantidad'] || 0;
-
-      // Aumentar o disminuir la cantidad según la acción
-      if (action === 'increase') {
-        newQuantity += 1;
-      } else if (action === 'decrease' && newQuantity > 1) {
-        newQuantity -= 1;
-      }
-
-      // Actualizar la cantidad en la base de datos
-      await updateDoc(docRef, { cantidad: newQuantity });
-      this.loadCartItems(); // Refrescar ítems después de agregar
-
-      console.log(`Cantidad actualizada en Firestore: ${newQuantity}`);
-    }
-  }
-
-  // Eliminar un producto del carrito en Firestore
   async deleteCartItemInDb(item: CartDb) {
     try {
       const docRef = doc(this._fireStore, `${this._collName}/${item.id}`);
       await deleteDoc(docRef);
-      this.loadCartItems(); // Refrescar ítems después de agregar
-
-      console.log(`Producto eliminado, idItem: ${item.id}`);
+      this.loadCartItems();
     } catch (error) {
       console.error(
         'Error al eliminar el producto de la base de datos:',
         error
       );
+      throw error;
+    }
+  }
+
+  async clearCart() {
+    const userId = this._currentUserId();
+
+    if (!this._isAuth || !userId) {
+      console.error('Usuario no autenticado o no válido.');
+      return;
+    }
+
+    try {
+      const cartItems = this._cartItems();
+
+      await this.saveTicket(
+        cartItems,
+        cartItems.reduce((sum, item) => sum + item.precioTotal, 0)
+      );
+
+      for (const item of cartItems) {
+        const docRef = doc(this._fireStore, `${this._collName}/${item.id}`);
+        await deleteDoc(docRef);
+      }
+
+      this._cartItems.set([]);
+      this._toastService.getToast(
+        'Carrito vaciado exitosamente.',
+        'middle',
+        'success'
+      );
+    } catch (error) {
+      console.error('Error al vaciar el carrito:', error);
+      this._toastService.getToast(
+        'Ocurrió un error al vaciar el carrito.',
+        'middle',
+        'danger'
+      );
+    }
+  }
+
+  /* ============================================================= */
+
+  async saveTicket(products: CartDb[], totalAmount: number) {
+    const userId = this._currentUserId();
+
+    if (!userId) {
+      console.error('Usuario no autenticado o no válido.');
+      return;
+    }
+
+    try {
+      const collRef = collection(this._fireStore, 'tickets');
+      const ticketData = {
+        userId,
+        products,
+        totalAmount,
+        date: new Date().toLocaleDateString(), // aqui par filtrar
+      };
+
+      await addDoc(collRef, ticketData);
+
+      this._toastService.getToast(
+        'Ticket guardado en el historial.',
+        'middle',
+        'success'
+      );
+    } catch (error) {
+      console.error('Error al guardar el ticket:', error);
+      this._toastService.getToast(
+        'Ocurrió un error al guardar el ticket.',
+        'middle',
+        'danger'
+      );
+    }
+  }
+
+  // async getTicketsByDateRange(startDate: string, endDate: string) {
+  //   const userId = this._currentUserId();
+
+  //   if (!userId) {
+  //     console.error('Usuario no autenticado o no válido.');
+  //     return [];
+  //   }
+
+  //   try {
+  //     const collRef = collection(this._fireStore, 'tickets');
+  //     const q = query(
+  //       collRef,
+  //       where('userId', '==', userId),
+  //       where('date', '>=', startDate),
+  //       where('date', '<=', endDate)
+  //     );
+
+  //     const querySnapshot = await getDocs(q);
+  //     return querySnapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //   } catch (error) {
+  //     console.error('Error al obtener los tickets:', error);
+  //     throw error;
+  //   }
+  // }
+
+  async getTicketsByDate(date: string) {
+    const userId = this._currentUserId();
+
+    if (!userId) {
+      console.error('Usuario no autenticado o no válido.');
+      return [];
+    }
+
+    try {
+      const collRef = collection(this._fireStore, 'tickets');
+      const q = query(
+        collRef,
+        where('userId', '==', userId),
+        // where('date', '>=', `${date}T00:00:00.000Z`),
+        // where('date', '<=', `${date}T23:59:59.999Z`)
+        where('date', '==', date)
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      return querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    } catch (error) {
+      console.error('Error al obtener tickets:', error);
       throw error;
     }
   }

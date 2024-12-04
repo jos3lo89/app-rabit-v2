@@ -21,7 +21,7 @@ import {
   trashOutline,
 } from 'ionicons/icons';
 import { PdfService } from 'src/app/shared/services/pdf.service';
-import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cart',
@@ -43,7 +43,7 @@ export class CartPage implements OnInit {
   private _authService = inject(AuthService);
   private _cartService = inject(CartService);
   private _pdfService = inject(PdfService);
-  private _router = inject(Router);
+  private _alertController = inject(AlertController);
 
   currentUser: User | null = null;
   cartItems: CartDb[] | null = null;
@@ -51,7 +51,6 @@ export class CartPage implements OnInit {
   precioTotalFinal: number | null = null;
 
   pushRouter(route: string) {
-    // this._router.navigateByUrl(route);
     console.log(route);
   }
 
@@ -66,23 +65,7 @@ export class CartPage implements OnInit {
       next: (data) => {
         this.currentUser = data;
         if (this.currentUser) {
-          this._cartService
-            .gettingCartWithUserid(this.currentUser.uid)
-            .subscribe({
-              next: (data) => {
-                console.log(data);
-                this.cartItems = data.map((item) => {
-                  return {
-                    ...item,
-                    precioTotal: item.precioUnidad * item.cantidad,
-                  };
-                });
-                this.calcularPrecioTotal();
-              },
-              error: (error) => {
-                console.log(error);
-              },
-            });
+          this.loadCartItems(this.currentUser.uid);
         }
       },
       error: (error) => {
@@ -91,19 +74,33 @@ export class CartPage implements OnInit {
     });
   }
 
+  private loadCartItems(userId: string) {
+    this._cartService.gettingCartWithUserid(userId).subscribe({
+      next: (data) => {
+        this.cartItems = data.map((item) => ({
+          ...item,
+          precioTotal: item.precioUnidad * item.cantidad,
+        }));
+        this.calcularPrecioTotal();
+      },
+      error: (error) =>
+        console.error('Error al cargar ítems del carrito:', error),
+    });
+  }
+
   async updateQuantity(item: CartDb, action: 'increase' | 'decrease') {
     if (this.isUpdating) return;
     this.isUpdating = true;
 
-    if (action === 'increase') {
-      item.cantidad++;
-    } else if (action === 'decrease' && item.cantidad > 1) {
-      item.cantidad--;
-    }
-
-    item.precioTotal = item.precioUnidad * item.cantidad;
-    this.calcularPrecioTotal();
     try {
+      if (action === 'increase') {
+        item.cantidad++;
+      } else if (action === 'decrease' && item.cantidad > 1) {
+        item.cantidad--;
+      }
+
+      item.precioTotal = item.precioUnidad * item.cantidad;
+      this.calcularPrecioTotal();
       await this._cartService.updateItemQuantity(
         item.idItem,
         item.idUser,
@@ -116,16 +113,36 @@ export class CartPage implements OnInit {
     }
   }
 
-  removeItem(item: CartDb) {
+  async removeItem(item: CartDb) {
     if (!this.cartItems) return;
 
-    this._cartService.deleteCartItemInDb(item);
+    const alert = await this._alertController.create({
+      header: 'Confirmar acción',
+      message: '¿Estás seguro de que quieres eliminar el producto del carrito?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Acción cancelada por el usuario.');
+          },
+        },
+        {
+          text: 'Aceptar',
+          handler: async () => {
+            this._cartService.deleteCartItemInDb(item);
+            if (this.cartItems) {
+              this.cartItems = this.cartItems.filter(
+                (cartItem) => cartItem.id !== item.id
+              );
+            }
+            this.calcularPrecioTotal();
+          },
+        },
+      ],
+    });
 
-    this.cartItems = this.cartItems.filter(
-      (cartItem) => cartItem.id !== item.id
-    );
-
-    this.calcularPrecioTotal();
+    await alert.present();
   }
 
   calcularPrecioTotal() {
@@ -137,14 +154,42 @@ export class CartPage implements OnInit {
     }
   }
 
-  continueShopping() {
+  async continueShopping() {
     if (!this.cartItems || !this.precioTotalFinal) {
+      console.warn('El carrito está vacío o no hay precio total.');
       return;
     }
 
-    this._pdfService.generarBoleta({
-      producto: this.cartItems,
-      totalPagar: this.precioTotalFinal,
+    const alert = await this._alertController.create({
+      header: 'Confirmar acción',
+      message:
+        '¿Estás seguro de que quieres imprimir el ticket y vaciar el carrito?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Acción cancelada por el usuario.');
+          },
+        },
+        {
+          text: 'Aceptar',
+          handler: async () => {
+            if (!this.cartItems || !this.precioTotalFinal) return;
+            this._pdfService.generarBoleta({
+              producto: this.cartItems,
+              totalPagar: this.precioTotalFinal,
+            });
+
+            await this._cartService.clearCart();
+            if (this.currentUser) {
+              this.loadCartItems(this.currentUser.uid);
+            }
+          },
+        },
+      ],
     });
+
+    await alert.present();
   }
 }

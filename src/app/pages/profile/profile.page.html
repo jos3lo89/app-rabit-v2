@@ -58,7 +58,15 @@
     </ion-card-content>
   </ion-card>
 
-  @if (user.email === "pma.mode.18@gmail.com") {
+
+  @if (user.email === "123@123.com") {
+
+    <ion-card class="box-btn">
+      <ion-button fill="clear" (click)="pushRouter('/ticket-history')">
+        Historial de tickets
+      </ion-button>
+    </ion-card>
+
 
   <ion-card class="box-btn">
     <ion-button fill="clear" (click)="pushRouter('/private/add-pizza')">

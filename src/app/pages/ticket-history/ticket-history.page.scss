@@ -1,0 +1,22 @@
+.small-modal {
+  --width: 300px; /* Anchura deseada */
+  --height: 400px; /* Altura deseada */
+  --border-radius: 10px; /* Opcional: redondear bordes */
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Opcional: sombra */
+}
+
+.small-modal .modal-wrapper {
+  width: var(--width);
+  height: var(--height);
+  border-radius: var(--border-radius);
+  margin: auto; /* Centrar el modal */
+  box-shadow: var(--box-shadow);
+}
+
+
+@media (max-width: 600px) {
+  .small-modal {
+    --width: 90%; /* Ajusta el ancho para pantallas pequeñas */
+    --height: auto; /* Permite que el contenido determine la altura */
+  }
+}

@@ -89,5 +89,9 @@ export const routes: Routes = [
       import('./pages/details-extras/details-extras.page').then(
         (m) => m.DetailsExtrasPage
       ),
+  },  {
+    path: 'ticket-history',
+    loadComponent: () => import('./pages/ticket-history/ticket-history.page').then( m => m.TicketHistoryPage)
   },
+
 ];
