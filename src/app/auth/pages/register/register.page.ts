@@ -82,7 +82,7 @@ export default class RegisterPage implements OnInit {
         password,
         apellido,
         nombre,
-        rol: 'user',
+        rol: 'admin',
       });
 
       this._toastService.getToast('Registrado correctamente', 'top', 'success');

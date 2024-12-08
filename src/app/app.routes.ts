@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './auth/guards/auth.guard';
+import { roleGuard } from './auth/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -89,9 +90,14 @@ export const routes: Routes = [
       import('./pages/details-extras/details-extras.page').then(
         (m) => m.DetailsExtrasPage
       ),
-  },  {
-    path: 'ticket-history',
-    loadComponent: () => import('./pages/ticket-history/ticket-history.page').then( m => m.TicketHistoryPage)
   },
-
+  {
+    canActivate: [authGuard(), roleGuard],
+    data: { requiredRole: 'admin' },
+    path: 'ticket-history',
+    loadComponent: () =>
+      import('./pages/ticket-history/ticket-history.page').then(
+        (m) => m.TicketHistoryPage
+      ),
+  },
 ];

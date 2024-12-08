@@ -85,9 +85,7 @@ export class TicketHistoryPage implements OnInit {
   ngOnInit() {}
 
   async fetchTickets() {
-    if (!this.startDate) {
-      return;
-    }
+    if (!this.startDate) return;
 
     try {
       const [year, month, day] = this.startDate.split('-');
@@ -95,6 +93,8 @@ export class TicketHistoryPage implements OnInit {
       this.tickets = await this._cartService.getTicketsByDate(
         `${parseInt(day)}/${parseInt(month)}/${year}`
       );
+
+      console.log('tikcets', this.tickets);
     } catch (error) {
       console.error('Error al obtener tickets:', error);
     }

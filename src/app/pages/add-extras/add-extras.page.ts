@@ -23,7 +23,7 @@ import {
 import { CameraSource } from '@capacitor/camera';
 import { UploadImageService } from 'src/app/shared/services/upload-image.service';
 import { addIcons } from 'ionicons';
-import { camera, close, image } from 'ionicons/icons';
+import { arrowBackOutline, camera, close, image } from 'ionicons/icons';
 import { ExtrasService } from 'src/app/shared/services/extras.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { Router } from '@angular/router';
@@ -71,7 +71,7 @@ export class AddExtrasPage implements OnInit {
   });
 
   constructor() {
-    addIcons({ camera, image, close });
+    addIcons({ camera, image, close, arrowBackOutline });
   }
 
   async takeImage(source: CameraSource) {

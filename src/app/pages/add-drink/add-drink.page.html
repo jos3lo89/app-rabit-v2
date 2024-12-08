@@ -1,7 +1,11 @@
 <ion-content [fullscreen]="true">
-  <ion-card class="box-btn">
-    <ion-button fill="clear" size="full" (click)="pushRouter('/private/profile')">
-      Ir atras
+  <ion-card class="box-back-btn">
+    <ion-button
+      fill="clear"
+      expand="full"
+      (click)="pushRouter('/private/profile')"
+    >
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-card>
   <ion-title size="large" style="text-align: center">Agregar bebida</ion-title>
@@ -36,13 +40,26 @@
       ></ion-input>
       <br />
 
+      @if (fotoBebida) {
+        <img [src]="fotoBebida" alt="foto de la pizza" />
+      } @if (!fotoBebida) {
+
       <ion-button color="tertiary" (click)="openModal2()"
         >Agregar foto</ion-button
       >
-      @if (fotoBebida) {
-      <ion-card>
-        <img [src]="fotoBebida" alt="foto de la pizza" />
-      </ion-card>
+      }@else {
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px;
+        "
+      >
+        <ion-button (click)="quitarFoto()" color="warning"
+          >Quitar foto</ion-button
+        >
+      </div>
       } @if (openModal) {
       <ion-modal [isOpen]="openModal">
         <ng-template>
@@ -76,10 +93,19 @@
       </ion-modal>
       }
       <br />
-      <br />
-      <ion-button color="secondary" type="submit">
-        {{guardando ? "Guardando..." : "Guardar" }}
-      </ion-button>
+      <div
+      style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    "
+      >
+
+        <ion-button color="secondary" type="submit">
+          {{guardando ? "Guardando..." : "Guardar" }}
+        </ion-button>
+      </div>
     </form>
   </ion-card>
 </ion-content>

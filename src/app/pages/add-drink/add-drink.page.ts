@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { CameraSource } from '@capacitor/camera';
 import { UploadImageService } from 'src/app/shared/services/upload-image.service';
 import { addIcons } from 'ionicons';
-import { camera, close, image } from 'ionicons/icons';
+import { camera, close, image, arrowBackOutline } from 'ionicons/icons';
 import { DrinkService } from 'src/app/shared/services/drink.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 @Component({
@@ -55,7 +55,7 @@ export class AddDrinkPage implements OnInit {
   guardando = false;
 
   constructor() {
-    addIcons({ camera, image, close });
+    addIcons({ arrowBackOutline, close, camera, image });
   }
 
   ngOnInit() {}
@@ -107,5 +107,9 @@ export class AddDrinkPage implements OnInit {
 
   openModal2() {
     this.openModal = true;
+  }
+
+  quitarFoto() {
+    this.fotoBebida = null;
   }
 }

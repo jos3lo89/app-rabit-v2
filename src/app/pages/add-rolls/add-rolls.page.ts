@@ -28,7 +28,7 @@ import { Router } from '@angular/router';
 import { CameraSource } from '@capacitor/camera';
 import { UploadImageService } from 'src/app/shared/services/upload-image.service';
 import { addIcons } from 'ionicons';
-import { camera, close, image } from 'ionicons/icons';
+import { camera, close, image, arrowBackOutline } from 'ionicons/icons';
 import { RollsService } from 'src/app/shared/services/rolls.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { RollsDb } from 'src/app/shared/interfaces/rolls.interface';
@@ -81,7 +81,7 @@ export class AddRollsPage {
   });
 
   constructor() {
-    addIcons({ camera, close, image });
+    addIcons({arrowBackOutline,close,camera,image});
   }
 
   async addRoll() {

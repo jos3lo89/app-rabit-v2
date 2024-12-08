@@ -14,6 +14,7 @@ import { ToastService } from 'src/app/shared/services/toast.service';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline } from 'ionicons/icons';
+import { RolesService } from 'src/app/shared/services/roles.service';
 
 @Component({
   selector: 'app-profile',
@@ -27,10 +28,17 @@ export class ProfilePage implements OnInit {
   private _toast = inject(ToastService);
   private _router = inject(Router);
   private _alertController = inject(AlertController);
+  private _rolesService = inject(RolesService);
 
   user: User | null = null;
+  currentRole: string | null = null;
+
   constructor() {
     addIcons({ arrowBackOutline });
+  }
+
+  ionViewWillEnter() {
+    this.currentRole = this._rolesService.role();
   }
 
   ngOnInit() {

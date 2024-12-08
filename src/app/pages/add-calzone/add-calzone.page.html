@@ -1,13 +1,17 @@
 <ion-content [fullscreen]="true">
-  <ion-card class="box-btn">
-    <ion-button fill="clear" size="full" (click)="pushRouter('/private/profile')">
-      Ir atras
+  <ion-card class="box-back-btn">
+    <ion-button
+      fill="clear"
+      expand="full"
+      (click)="pushRouter('/private/profile')"
+    >
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-card>
 
   <ion-title size="large" style="text-align: center">Agregar Calzone</ion-title>
 
-  <ion-card>
+  <ion-card class="box-form">
     <ion-card-content>
       <form [formGroup]="form" (ngSubmit)="addCalzone()">
         <ion-input
@@ -61,18 +65,24 @@
         >
         } @if (calzoneFoto) {
         <div>
-          <ion-card>
             <img [src]="calzoneFoto" alt="Foto de la pizza" />
-          </ion-card>
           <!-- <ion-card> -->
-          <ion-button
-            (click)="quitarFoto()"
-            fill="clear"
-            size="full"
-            color="danger"
-          >
-            quitar foto
-          </ion-button>
+            <div
+            style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+          "
+            >
+
+              <ion-button
+              (click)="quitarFoto()"
+              color="warning"
+              >
+              quitar foto
+            </ion-button>
+          </div>
           <!-- </ion-card> -->
         </div>
         }
@@ -108,9 +118,19 @@
           </ng-template>
         </ion-modal>
 
-        <ion-button type="submit" [disabled]="!form.valid"
-          >{{addLoading ? "Registrando..." : "Registrar" }}</ion-button
+        <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px;
+        "
         >
+
+          <ion-button type="submit" [disabled]="!form.valid"
+          >{{addLoading ? "Registrando..." : "Registrar" }}</ion-button
+          >
+        </div>
       </form>
     </ion-card-content>
   </ion-card>

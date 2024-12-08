@@ -55,21 +55,18 @@
     </div>
   </div>
 
-  @if (user.email === "123@123.com") {
+  @if (currentRole === "admin") {
 
   <div class="box-tns-adds">
-    <!-- <ion-card class="box-btn"> -->
     <ion-button
       class="btn-b"
       shape="round"
       color="tertiary"
       (click)="pushRouter('/ticket-history')"
     >
-      Historial de tickets </ion-button
-    >
-    <!-- </ion-card> -->
+      Historial de tickets
+    </ion-button>
 
-    <!-- <ion-card class="box-btn"> -->
     <ion-button
       class="btn-b"
       shape="round"
@@ -77,9 +74,7 @@
     >
       Agregar pizza
     </ion-button>
-    <!-- </ion-card> -->
 
-    <!-- <ion-card class="box-btn"> -->
     <ion-button
       class="btn-b"
       shape="round"
@@ -87,8 +82,7 @@
     >
       Agregar bebida
     </ion-button>
-    <!-- </ion-card> -->
-    <!-- <ion-card class="box-btn"> -->
+
     <ion-button
       class="btn-b"
       shape="round"
@@ -96,8 +90,7 @@
     >
       Agregar rolls
     </ion-button>
-    <!-- </ion-card> -->
-    <!-- <ion-card class="box-btn"> -->
+
     <ion-button
       class="btn-b"
       shape="round"
@@ -105,8 +98,7 @@
     >
       Agregar Calzone
     </ion-button>
-    <!-- </ion-card> -->
-    <!-- <ion-card class="box-btn"> -->
+
     <ion-button
       class="btn-b"
       shape="round"
@@ -114,7 +106,6 @@
     >
       Agregar Extras
     </ion-button>
-    <!-- </ion-card> -->
   </div>
 
   } } @else {

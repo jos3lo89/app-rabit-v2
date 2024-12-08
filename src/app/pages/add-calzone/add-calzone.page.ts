@@ -27,7 +27,7 @@ import { CalzoneService } from 'src/app/shared/services/calzone.service';
 import { CameraSource } from '@capacitor/camera';
 import { CalzoneDB } from 'src/app/shared/interfaces/calzone.interfaces';
 import { addIcons } from 'ionicons';
-import { camera, close, image } from 'ionicons/icons';
+import { camera, close, image, arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-add-calzone',
@@ -73,7 +73,7 @@ export class AddCalzonePage {
   });
 
   constructor() {
-    addIcons({ camera, close, image });
+    addIcons({arrowBackOutline,close,camera,image});
   }
 
   async addCalzone() {

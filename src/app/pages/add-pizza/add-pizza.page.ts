@@ -28,7 +28,7 @@ import {
 import { Router } from '@angular/router';
 import { CameraSource } from '@capacitor/camera';
 import { addIcons } from 'ionicons';
-import { camera, close, image } from 'ionicons/icons';
+import { camera, close, image, arrowBackOutline } from 'ionicons/icons';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { UploadImageService } from 'src/app/shared/services/upload-image.service';
 import { PizzaService } from 'src/app/shared/services/pizza.service';
@@ -92,7 +92,7 @@ export class AddPizzaPage implements OnInit {
   });
 
   constructor() {
-    addIcons({ camera, image, close });
+    addIcons({ arrowBackOutline, close, camera, image });
   }
 
   actualizarOpciones(opcion: string) {

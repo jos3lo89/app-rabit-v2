@@ -106,10 +106,10 @@ export class PdfService {
       doc.text(`Total a pagar: S/ ${carrito.totalPagar.toFixed(2)}`, 10, y);
 
       // Mensaje de agradecimiento
-      y += 10;
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'italic');
-      doc.text('¡Gracias por su compra!', 45, y, { align: 'center' });
+      // y += 10;
+      // doc.setFontSize(9);
+      // doc.setFont('helvetica', 'italic');
+      // doc.text('¡Gracias por su compra!', 45, y, { align: 'center' });
 
       const pdfBlob = doc.output('blob');
 

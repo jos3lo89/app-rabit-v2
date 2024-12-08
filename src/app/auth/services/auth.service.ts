@@ -9,8 +9,15 @@ import {
   User,
 } from '@angular/fire/auth';
 import { UserLogin, UserRegister } from '../models/auth.models';
-import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { RolesService } from 'src/app/shared/services/roles.service';
+
+export interface UserdocData {
+  apellido: string;
+  rol: string;
+  nombre: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +25,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private _auht = inject(Auth);
   private _fireStore = inject(Firestore);
+  private _rolesService = inject(RolesService);
 
   constructor() {}
 
@@ -26,6 +34,8 @@ export class AuthService {
   }
 
   async cerrarSesion() {
+    this._rolesService.clearRole();
+
     await this._auht.signOut();
   }
 
@@ -47,11 +57,20 @@ export class AuthService {
   }
 
   async login(user: UserLogin) {
-    return await signInWithEmailAndPassword(
+    const userFound = await signInWithEmailAndPassword(
       this._auht,
       user.email,
       user.password
     );
+
+    const docRef = doc(this._fireStore, `usuarios/${userFound.user.uid}`);
+    const userDoc = await getDoc(docRef);
+
+    const data = userDoc.data() as UserdocData;
+
+    this._rolesService.setRole(data['rol']);
+
+    return userFound;
   }
 
   async loginWithGoogle() {
