@@ -3,15 +3,39 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DrinkService } from 'src/app/shared/services/drink.service';
 import { DrinkDb } from 'src/app/shared/interfaces/drink.interfaces';
-import { IonContent, IonCard, IonButton, IonSearchbar, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSpinner } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonCard,
+  IonButton,
+  IonSearchbar,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonSpinner,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-list-drinks',
   templateUrl: './list-drinks.page.html',
   styleUrls: ['./list-drinks.page.scss'],
   standalone: true,
-  imports: [IonSpinner, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCardContent, IonSearchbar, IonButton, IonCard, IonContent,  CommonModule, FormsModule],
+  imports: [
+    IonIcon,
+    IonSpinner,
+    IonCardTitle,
+    IonCardHeader,
+    IonCardContent,
+    IonSearchbar,
+    IonButton,
+    IonCard,
+    IonContent,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class ListDrinksPage implements OnInit {
   private _drinkService = inject(DrinkService);
@@ -19,7 +43,9 @@ export class ListDrinksPage implements OnInit {
   drinks: DrinkDb[] | null = null;
   filteredDrinksF: DrinkDb[] | null = null;
 
-  constructor() {}
+  constructor() {
+    addIcons({ arrowBackOutline });
+  }
 
   ngOnInit() {
     this.getingDrinks();
@@ -50,7 +76,6 @@ export class ListDrinksPage implements OnInit {
     );
   }
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-drink'], {
       queryParams: {
         id,

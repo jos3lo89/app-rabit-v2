@@ -8,7 +8,7 @@ import {
   getDocs,
 } from '@angular/fire/firestore';
 import { UploadImageService } from './upload-image.service';
-import { Pizza, PizzaDb } from '../interfaces/pizza.interfaces';
+import { PizzaDb } from '../interfaces/pizza.interfaces';
 import { Observable } from 'rxjs';
 
 @Injectable({

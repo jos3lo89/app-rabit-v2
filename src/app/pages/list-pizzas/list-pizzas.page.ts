@@ -9,13 +9,15 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonCardSubtitle,
   IonSpinner,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { PizzaService } from 'src/app/shared/services/pizza.service';
 import { PizzaDb } from 'src/app/shared/interfaces/pizza.interfaces';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CartService } from 'src/app/shared/services/cart.service';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-list-pizzas',
@@ -23,6 +25,7 @@ import { CartService } from 'src/app/shared/services/cart.service';
   styleUrls: ['./list-pizzas.page.scss'],
   standalone: true,
   imports: [
+    IonIcon,
     IonSpinner,
     IonCardTitle,
     IonCardHeader,
@@ -38,20 +41,19 @@ import { CartService } from 'src/app/shared/services/cart.service';
 export class ListPizzasPage {
   private _pizzasService = inject(PizzaService);
   private _router = inject(Router);
-  private _cartService = inject(CartService);
 
   pizzas: PizzaDb[] | null = null;
   filteredPizzas: PizzaDb[] | null = null;
 
   constructor() {
+    addIcons({ arrowBackOutline });
+
     this.getingPizzas();
   }
 
   getingPizzas() {
     this._pizzasService.listingPizzas().subscribe({
       next: (data) => {
-        console.log(data);
-
         this.pizzas = data;
         this.filteredPizzas = data;
       },
@@ -62,7 +64,6 @@ export class ListPizzasPage {
   }
 
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-pizza'], {
       queryParams: {
         id,

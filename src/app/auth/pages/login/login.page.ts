@@ -14,15 +14,18 @@ import {
   IonList,
   IonCardContent,
   IonButton,
+  IonInputPasswordToggle,
   IonInput,
   IonSpinner,
   ToastController,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { ToastService } from 'src/app/shared/services/toast.service';
 import { GoogleBtnComponent } from '../../components/google-btn/google-btn.component';
 import { LoadingService } from 'src/app/shared/services/loading.service';
+import { addIcons } from 'ionicons';
+import { lockClosed, mailOutline, mailSharp } from 'ionicons/icons';
 
 @Component({
   selector: 'app-login',
@@ -30,19 +33,20 @@ import { LoadingService } from 'src/app/shared/services/loading.service';
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
+    IonIcon,
     IonSpinner,
     IonButton,
     IonCardContent,
     IonList,
     IonCardTitle,
     IonCardHeader,
+    IonInputPasswordToggle,
     IonCard,
     IonContent,
     IonInput,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    GoogleBtnComponent,
     RouterLink,
     IonInput,
   ],
@@ -51,12 +55,11 @@ export default class LoginPage implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _authService = inject(AuthService);
   private _router = inject(Router);
-  // private _toast = inject(ToastService);
-  private _loadingService = inject(LoadingService);
-
   private _toastController = inject(ToastController);
 
-  constructor() {}
+  constructor() {
+    addIcons({ lockClosed, mailOutline, mailSharp });
+  }
 
   isLoadingBtnSubmit = false;
   isLoadingGoogleBtn = false;
@@ -79,8 +82,6 @@ export default class LoginPage implements OnInit {
     const { email, password } = this.form.value;
     if (!email || !password) return;
 
-    // const loading = await this._loadingService.loading();
-    // await loading.present();
     try {
       this.isLoadingBtnSubmit = true;
 
@@ -91,13 +92,6 @@ export default class LoginPage implements OnInit {
 
       this._router.navigateByUrl('/home');
       this.isLoadingBtnSubmit = false;
-
-      // this._toast.getToast(
-      //   `Vienvenido ${user.user.displayName ? user.user.displayName : user.user.email
-      //   }`,
-      //   'middle',
-      //   'success'
-      // );
 
       const toast = await this._toastController.create({
         message: `Vienvenido ${
@@ -111,11 +105,8 @@ export default class LoginPage implements OnInit {
       await toast.present();
 
       this.form.reset();
-      // loading.dismiss();
     } catch (error) {
       console.log(error);
-      // this._toast.getToast('Error al iniciar sesión', 'middle', 'danger');
-
       const toast = await this._toastController.create({
         message: 'Error al iniciar sesión',
         duration: 1500,
@@ -124,28 +115,17 @@ export default class LoginPage implements OnInit {
       });
 
       await toast.present();
-
       this.isLoadingBtnSubmit = false;
-
-      // loading.dismiss();
     }
   }
 
   async loginWithGoogle() {
     try {
       this.isLoadingGoogleBtn = true;
-      const user = await this._authService.loginWithGoogle();
+      await this._authService.loginWithGoogle();
       this._router.navigateByUrl('/home');
-      // this._toast.getToast(
-      //   `Vienvenido ${
-      //     user.user.displayName ? user.user.displayName : user.user.email
-      //   }`,
-      //   'middle',
-      //   'success'
-      // );
       this.isLoadingGoogleBtn = false;
     } catch (error) {
-      // this._toast.getToast('Error al iniciar sesión', 'middle', 'danger');
       console.log(error);
       this.isLoadingGoogleBtn = false;
     }

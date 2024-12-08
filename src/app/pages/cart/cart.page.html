@@ -1,94 +1,94 @@
 <ion-content [fullscreen]="true">
   @if (cartItems) {
 
-  <ion-card class="box-back-btn">
-    <ion-button fill="clear" expand="full">
-      <ion-text size="large" color="secondary">Carrito de compras</ion-text>
-    </ion-button>
-  </ion-card>
+  <div class="box-back-btn">
+    <ion-text size="large" color="secondary">Lista de prodcutos</ion-text>
+  </div>
 
   @if (cartItems.length !== 0) {
-
-  <!-- <ion-list> -->
-  <ion-card
-    *ngFor="let item of cartItems"
-    style="margin-bottom: 10px; padding: 10px"
-  >
-    <div
-      style="display: flex; justify-content: space-around; align-items: center"
+  <div class="cart-items-box">
+    <ion-card
+      *ngFor="let item of cartItems"
+      style="margin-bottom: 10px; padding: 10px"
     >
-      <div (click)="pushRouter(item.id)">
-        <!-- <ion-thumbnail> -->
-        <img
-          [src]="item.imagen"
-          alt="Imagen del producto"
-          style="max-width: 100px"
-        />
-        <!-- </ion-thumbnail> -->
-      </div>
-      <div style="display: flex; flex-direction: column">
-        <div>
-          <ion-label>
-            <h2>{{ item.nombre }}</h2>
-            <p>Precio: s/ {{ item.precioUnidad }}</p>
-            <p>Cantidad: {{ item.cantidad }}</p>
-            <p>Total: S/ {{ item.precioTotal }}</p>
-          </ion-label>
+      <div
+        style="
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+        "
+      >
+        <div (click)="pushRouter(item.id)">
+          <img
+            [src]="item.imagen"
+            alt="Imagen del producto"
+            style="max-width: 100px"
+          />
         </div>
+        <div style="display: flex; flex-direction: column">
+          <div>
+            <ion-label>
+              <h2>{{ item.nombre }}</h2>
+              <p>Precio: s/ {{ item.precioUnidad.toFixed(2) }}</p>
+              <p>Cantidad: {{ item.cantidad }}</p>
+              <p>Total: S/ {{ item.precioTotal.toFixed(2) }}</p>
+            </ion-label>
+          </div>
 
-        <div
-          style="
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-          "
-        >
-          <ion-button
-            [disabled]="isUpdating"
-            (click)="updateQuantity(item, 'increase')"
+          <div
+            style="
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
+            "
           >
-            <ion-icon
-              size="large"
-              slot="icon-only"
-              name="add-circle-outline"
-            ></ion-icon>
-          </ion-button>
-          <ion-button
-            [disabled]="isUpdating"
-            (click)="updateQuantity(item, 'decrease')"
-          >
-            <ion-icon
-              size="large"
-              slot="icon-only"
-              name="remove-circle-outline"
-            ></ion-icon>
-          </ion-button>
+            <ion-button
+              [disabled]="isUpdating"
+              (click)="updateQuantity(item, 'increase')"
+            >
+              <ion-icon
+                size="large"
+                slot="icon-only"
+                name="add-circle-outline"
+              ></ion-icon>
+            </ion-button>
+            <ion-button
+              [disabled]="isUpdating"
+              (click)="updateQuantity(item, 'decrease')"
+            >
+              <ion-icon
+                size="large"
+                slot="icon-only"
+                name="remove-circle-outline"
+              ></ion-icon>
+            </ion-button>
 
-          <ion-button color="danger" (click)="removeItem(item)">
-            <ion-icon
-              size="large"
-              slot="icon-only"
-              name="trash-outline"
-            ></ion-icon>
-          </ion-button>
+            <ion-button color="danger" (click)="removeItem(item)">
+              <ion-icon
+                size="large"
+                slot="icon-only"
+                name="trash-outline"
+              ></ion-icon>
+            </ion-button>
+          </div>
         </div>
       </div>
+    </ion-card>
+
+    <ion-card>
+      <ion-button expand="full" fill="clear">
+        <span>Precio total: </span> S/ {{ precioTotalFinal }}
+      </ion-button>
+    </ion-card>
+
+    <div class="box-btn-imprime">
+      <ion-button (click)="continueShopping()">Imprimir ticket</ion-button>
     </div>
-  </ion-card>
-  <!-- </ion-list> -->
+  </div>
 
-  <ion-card>
-    <ion-button expand="full" fill="clear">
-      <span>Precio total: </span> S/ {{ precioTotalFinal }}
-    </ion-button>
-  </ion-card>
-
-  <ion-button expand="full" (click)="continueShopping()"
-    >Continuar comprando</ion-button
-  >
   } @else {
-  <div style="text-align: center">
-    <ion-text> No hay prouctos en el carrito </ion-text>
+  <div style="text-align: center; color: red">
+    <ion-text> No hay prouctos en la lista </ion-text>
   </div>
   } } @else {
   <div

@@ -6,16 +6,34 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { RollsService } from 'src/app/shared/services/rolls.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { RollsDb } from 'src/app/shared/interfaces/rolls.interface';
-import { IonContent, IonCard, IonButton, IonText, IonCardTitle } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonCard,
+  IonButton,
+  IonText,
+  IonCardTitle,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-details-rolls',
   templateUrl: './details-rolls.page.html',
   styleUrls: ['./details-rolls.page.scss'],
   standalone: true,
-  imports: [IonCardTitle, IonText, IonButton, IonCard, IonContent,  CommonModule, FormsModule],
+  imports: [
+    IonIcon,
+    IonCardTitle,
+    IonText,
+    IonButton,
+    IonCard,
+    IonContent,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class DetailsRollsPage implements OnInit {
   private _activatedRoute = inject(ActivatedRoute);
@@ -24,7 +42,6 @@ export class DetailsRollsPage implements OnInit {
   private _router = inject(Router);
   private _toast = inject(ToastService);
   private _cartService = inject(CartService);
-  private _loadingService = inject(LoadingService);
 
   params = {
     id: '',
@@ -50,13 +67,10 @@ export class DetailsRollsPage implements OnInit {
     }
     if (!this.roll) return;
 
-    // const loading = await this._loadingService.loading();
-    // await loading.present();
-
     try {
       this.addToCartLoading = true;
 
-       await this._cartService.addToCart({
+      await this._cartService.addToCart({
         cantidad: this.quantity,
         idItem: this.roll.id,
         descuento: 0.0,
@@ -66,12 +80,6 @@ export class DetailsRollsPage implements OnInit {
         precioTotal: this.precioTotal,
         precioUnidad: this.precioUnitario,
       });
-
-      // if (!result) {
-      //   this._toast.getToast('Error al añadir null', 'middle', 'warning');
-      // }
-
-      // this._toast.getToast('Roll agregado al carrito', 'middle', 'success');
 
       this.addToCartLoading = false;
     } catch (error) {
@@ -102,6 +110,8 @@ export class DetailsRollsPage implements OnInit {
   }
 
   constructor() {
+    addIcons({ arrowBackOutline });
+
     this._activatedRoute.queryParams.subscribe((param) => {
       if (param['id']) {
         this.params.id = param['id'];
@@ -123,7 +133,6 @@ export class DetailsRollsPage implements OnInit {
   async ionViewWillEnter() {
     this._rollsService.gettingRollWithId(this.params.id).subscribe({
       next: (data) => {
-        console.log(data);
         this.roll = data;
         this.precioUnitario = this.roll.precio;
         this.onPriceChange();

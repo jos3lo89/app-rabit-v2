@@ -119,8 +119,6 @@ export class AddPizzaPage implements OnInit {
 
       this.guardando = true;
 
-      console.log(this.form.value);
-
       await this._pizzaService.uploadPizza(this.form.value, this.fotoPizza);
 
       this.form.reset();

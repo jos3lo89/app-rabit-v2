@@ -1,31 +1,35 @@
 <ion-content [fullscreen]="true">
   @if (calzones) {
-  <ion-card>
+  <ion-card class="back-btn-box">
     <ion-button (click)="pushRouter('/home')" expand="full" fill="clear">
-      Atras
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-card>
-  <div>
-    <ion-card>
-      <ion-searchbar
-        show-clear-button="focus"
-        animated="true"
-        placeholder="Buscar aqui..."
-        (ionInput)="filterCalzone($event)"
-      ></ion-searchbar>
-    </ion-card>
+  <div class="search-box">
+    <ion-searchbar
+      show-clear-button="focus"
+      animated="true"
+      placeholder="Buscar aqui..."
+      (ionInput)="filterCalzone($event)"
+    ></ion-searchbar>
   </div>
   <div class="box-card">
     @for (calzone of filteredCalzone; track $index) {
 
-    <ion-card (click)="pushDetails(calzone.id)">
-      <ion-card-content>
-        <img src="{{calzone.image}}" alt="{{calzone.nombre}}" />
-      </ion-card-content>
-      <ion-card-header>
-        <ion-card-title>{{calzone.nombre}}</ion-card-title>
-        <!-- <ion-card-subtitle>{{calzone.descripcion}}</ion-card-subtitle> -->
-      </ion-card-header>
+    <ion-card class="pizza-card" (click)="pushDetails(calzone.id)">
+      <div class="separador">
+        <ion-card-content>
+          <ion-card-title style="color: #efefef">{{calzone.nombre}}</ion-card-title>
+        </ion-card-content>
+
+        <ion-card-header>
+          <img
+            src="{{calzone.image}}"
+            alt="{{calzone.nombre}}"
+            class="pizza-image"
+          />
+        </ion-card-header>
+      </div>
     </ion-card>
 
     }

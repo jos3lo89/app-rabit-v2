@@ -80,10 +80,7 @@ export class AddCalzonePage {
     try {
       const { descripcion, nombre, precio } = this.form.value;
 
-      if (!this.calzoneFoto) {
-        console.log('Insertar un foto');
-        return;
-      }
+      if (!this.calzoneFoto) return;
 
       if (!descripcion || !nombre || !precio) return;
 

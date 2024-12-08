@@ -15,8 +15,27 @@ ion-spinner {
   border-radius: 15px;
 }
 
-.box-btn {
+.detalles-box {
+  max-width: 330px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btns-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.box-tns-adds {
+  max-width: 330px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn-b {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
 }

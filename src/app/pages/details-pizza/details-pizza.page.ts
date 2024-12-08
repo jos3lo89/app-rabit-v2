@@ -10,6 +10,7 @@ import {
   IonCardHeader,
   IonSelectOption,
   IonSelect,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -18,6 +19,8 @@ import { PizzaDb } from 'src/app/shared/interfaces/pizza.interfaces';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { Cart, PizzaDetails } from 'src/app/shared/interfaces/cart.interfaces';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-details-pizza',
@@ -25,6 +28,7 @@ import { Cart, PizzaDetails } from 'src/app/shared/interfaces/cart.interfaces';
   styleUrls: ['./details-pizza.page.scss'],
   standalone: true,
   imports: [
+    IonIcon,
     IonCardHeader,
     IonCardTitle,
     IonText,
@@ -52,7 +56,6 @@ export class DetailsPizzaPage implements OnInit {
   selectedCombination: string[] = []; // Para Duo o Cuatro Estaciones
   onCombinationChange(index: number, value: string) {
     this.selectedCombination[index] = value;
-    console.log('Combinación actual:', this.selectedCombination);
   }
 
   validateCombination() {
@@ -68,12 +71,14 @@ export class DetailsPizzaPage implements OnInit {
     return true;
   }
 
-  opcionesDuo = ['Hawaiana', 'Pepperoni', 'Vegetariana', 'Carnes'];
+  opcionesDuo = ['Hawaiana', 'Pepperoni', 'Americana'];
   opcionesCuatroEstaciones = [
     'Hawaiana',
     'Pepperoni',
-    'Vegetariana',
-    'Mexicana',
+    'Americana',
+    'Veguie',
+    'Frutas',
+    'Rabi Champi',
   ];
 
   pizza: PizzaDb | null = null;
@@ -85,19 +90,20 @@ export class DetailsPizzaPage implements OnInit {
   tipoSeleccionado: string = 'salada';
   masaSeleccionada: string = 'clasica';
   addToCartLoading = false;
+  descuento: number = 0;
+  precioConDescuento: number = 0;
+  precioConDescuentoTotal: number = 0;
+  precioProductoCondes = 0;
 
   onTipoChange(event: any) {
-    console.log(event.detail.value);
     this.tipoSeleccionado = event.detail.value;
   }
 
   onMasaChange(event: any) {
-    console.log(event.detail.value);
     this.masaSeleccionada = event.detail.value;
   }
 
   onTamanoChange(event: any) {
-    console.log(event.detail.value);
     this.tamanoSeleccionado = event.detail.value;
 
     this.tamanoSeleccionado = event.detail.value;
@@ -118,6 +124,11 @@ export class DetailsPizzaPage implements OnInit {
   onPriceChange() {
     if (this.precioUnitario !== null) {
       this.precioTotal = this.precioUnitario * this.quantity;
+      this.precioConDescuento = this.precioUnitario * this.descuento; // 99.99
+      this.precioProductoCondes = this.precioUnitario - this.precioConDescuento;
+      this.precioConDescuentoTotal =
+        (this.precioUnitario - this.precioConDescuento) * this.quantity; // 233.1
+      // this.precioFinalTotal =
     }
   }
 
@@ -136,6 +147,8 @@ export class DetailsPizzaPage implements OnInit {
   }
 
   constructor() {
+    addIcons({ arrowBackOutline });
+
     this._activatedRoute.queryParams.subscribe((param) => {
       if (param['id']) {
         this.params.id = param['id'];
@@ -157,9 +170,15 @@ export class DetailsPizzaPage implements OnInit {
   async ionViewWillEnter() {
     this._pizzaService.gettingPizzaWithId(this.params.id).subscribe({
       next: (data) => {
-        console.log(data);
+        this.descuento = Number(data.descuento);
+
         this.pizza = data;
         this.precioUnitario = this.pizza.tamanosPrecios.familiar;
+
+        this.precioConDescuento = this.precioUnitario * this.descuento;
+
+        // console.log(this.precioConDescuento, this.precioUnitario);
+
         this.onPriceChange();
       },
       error: (error) => {
@@ -215,14 +234,23 @@ export class DetailsPizzaPage implements OnInit {
     }
 
     const cartItem: Cart = {
+      // precioTotal: this.precioTotal,
+      precioTotal:
+        this.descuento !== 0.0
+          ? this.precioConDescuentoTotal
+          : this.precioTotal,
+
+      // precioUnidad: this.precioUnitario,
+      precioUnidad:
+        this.descuento !== 0.0
+          ? this.precioProductoCondes
+          : this.precioUnitario,
       idUser: this.userId!,
       idItem: this.pizza!.id,
       nombre: this.pizza!.nombre,
       cantidad: this.quantity,
-      precioUnidad: this.precioUnitario,
-      precioTotal: this.precioTotal,
       imagen: this.pizza!.image,
-      descuento: 0, // Puedes ajustar esta lógica
+      descuento: this.descuento,
       pizzaDetail,
     };
 
@@ -231,35 +259,10 @@ export class DetailsPizzaPage implements OnInit {
 
       await this._cartService.addToCart(cartItem);
 
-      // const result = await this._cartService.addToCart({
-      //   cantidad: this.quantity,
-      //   idItem: this.pizza.id,
-      //   descuento: parseFloat(this.pizza.descuento),
-      //   idUser: this.userId,
-      //   imagen: this.pizza.image,
-      //   nombre: this.pizza.nombre,
-      //   precioTotal: this.precioTotal,
-      //   precioUnidad: this.precioUnitario,
-      //   pizzaDetail: {
-      //     esCuatroEstaciones: this.pizza.opciones.esCuatroEstaciones,
-      //     esDuo: this.pizza.opciones.esDuo,
-      //     esEntero: this.pizza.opciones.esEntero,
-      //     masa: this.masaSeleccionada,
-      //     tamano: this.tamanoSeleccionado,
-      //     sabor: this.tipoSeleccionado,
-      //   },
-      // });
-
-      // if (!result) {
-      //   this._toast.getToast('Error al añadir null', 'middle', 'warning');
-      // }
-
-      // this._toast.getToast('Pizza agregado al carrito', 'middle', 'success');
-
       this.addToCartLoading = false;
     } catch (error) {
-      this.addToCartLoading = false;
       console.log(error);
+      this.addToCartLoading = false;
       this._toast.getToast('Error al añadir', 'middle', 'warning');
     }
   }

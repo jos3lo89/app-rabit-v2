@@ -18,7 +18,6 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
-import { LoadingService } from 'src/app/shared/services/loading.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { RouterLink } from '@angular/router';
 
@@ -45,7 +44,6 @@ import { RouterLink } from '@angular/router';
 })
 export default class RegisterPage implements OnInit {
   private _authService = inject(AuthService);
-  private _loadinService = inject(LoadingService);
   private _fb = inject(FormBuilder);
   private _toastService = inject(ToastService);
 
@@ -56,7 +54,6 @@ export default class RegisterPage implements OnInit {
     password: this._fb.control('', [Validators.required]),
     nombre: this._fb.control('', [Validators.required]),
     apellido: this._fb.control('', [Validators.required]),
-    // rol: this._fb.control('', [Validators.required]),
   });
 
   constructor() {}
@@ -69,9 +66,6 @@ export default class RegisterPage implements OnInit {
 
       return;
     }
-
-    // const loading = await this._loadinService.loading();
-    // await loading.present();
 
     try {
       const { email, password, apellido, nombre } = this.form.value;
@@ -98,8 +92,6 @@ export default class RegisterPage implements OnInit {
     } catch (error) {
       console.log(error);
       this.isloadingSubmitBtn = false;
-    } finally {
-      // loading.dismiss();
     }
   }
 }

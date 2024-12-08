@@ -4,35 +4,34 @@ import {
   IonContent,
   IonCard,
   IonButton,
-  IonCardContent,
   IonSpinner,
+  IonIcon,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { User } from '@angular/fire/auth';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { Router } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [
-    IonSpinner,
-    IonCardContent,
-    IonButton,
-    IonCard,
-    IonContent,
-    CommonModule,
-  ],
+  imports: [IonIcon, IonSpinner, IonButton, IonCard, IonContent, CommonModule],
 })
 export class ProfilePage implements OnInit {
   private _authService = inject(AuthService);
   private _toast = inject(ToastService);
   private _router = inject(Router);
+  private _alertController = inject(AlertController);
 
   user: User | null = null;
-  constructor() {}
+  constructor() {
+    addIcons({ arrowBackOutline });
+  }
 
   ngOnInit() {
     this._authService.authState$.subscribe({
@@ -46,14 +45,38 @@ export class ProfilePage implements OnInit {
   }
 
   async logOut() {
-    try {
-      await this._authService.cerrarSesion();
-      this._router.navigateByUrl('/home');
-      this._toast.getToast('Cerraste sesión', 'middle', 'warning');
-    } catch (error) {
-      this._toast.getToast('Error al cerrar sesión', 'middle', 'danger');
-      console.log(error);
-    }
+    const alert = await this._alertController.create({
+      header: 'Confirmar acción',
+      message: '¿Estás seguro de que quieres cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Acción cancelada por el usuario');
+          },
+        },
+        {
+          text: 'Aceptar',
+          handler: async () => {
+            try {
+              await this._authService.cerrarSesion();
+              this._router.navigateByUrl('/home');
+              this._toast.getToast('Cerraste sesión', 'middle', 'warning');
+            } catch (error) {
+              this._toast.getToast(
+                'Error al cerrar sesión',
+                'middle',
+                'danger'
+              );
+              console.log(error);
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   pushRouter(route: string) {

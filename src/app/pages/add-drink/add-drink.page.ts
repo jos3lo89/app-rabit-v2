@@ -10,7 +10,6 @@ import {
   IonButtons,
   IonToolbar,
   IonInput,
-  IonTextarea,
   IonHeader,
   IonIcon,
 } from '@ionic/angular/standalone';

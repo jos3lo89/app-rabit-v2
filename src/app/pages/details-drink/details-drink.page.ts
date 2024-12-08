@@ -1,7 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonCard, IonButton, IonText, IonCardTitle } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonCard,
+  IonButton,
+  IonText,
+  IonCardTitle,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { DrinkService } from 'src/app/shared/services/drink.service';
@@ -9,13 +16,24 @@ import { ToastService } from 'src/app/shared/services/toast.service';
 import { DrinkDb } from 'src/app/shared/interfaces/drink.interfaces';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-details-drink',
   templateUrl: './details-drink.page.html',
   styleUrls: ['./details-drink.page.scss'],
   standalone: true,
-  imports: [IonCardTitle, IonText, IonButton, IonCard, IonContent,  CommonModule, FormsModule],
+  imports: [
+    IonIcon,
+    IonCardTitle,
+    IonText,
+    IonButton,
+    IonCard,
+    IonContent,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class DetailsDrinkPage implements OnInit {
   private _activatedRoute = inject(ActivatedRoute);
@@ -24,7 +42,6 @@ export class DetailsDrinkPage implements OnInit {
   private _router = inject(Router);
   private _toast = inject(ToastService);
   private _cartService = inject(CartService);
-  private _loadingService = inject(LoadingService);
 
   params = {
     id: '',
@@ -59,6 +76,8 @@ export class DetailsDrinkPage implements OnInit {
   }
 
   constructor() {
+    addIcons({ arrowBackOutline });
+
     this._activatedRoute.queryParams.subscribe((param) => {
       if (param['id']) {
         this.params.id = param['id'];
@@ -80,7 +99,6 @@ export class DetailsDrinkPage implements OnInit {
   async ionViewWillEnter() {
     this._drinkService.gettingDrinkWithId(this.params.id).subscribe({
       next: (data) => {
-        console.log(data);
         this.drink = data;
         this.precioUnitario = this.drink.precio;
         this.onPriceChange();
@@ -107,13 +125,10 @@ export class DetailsDrinkPage implements OnInit {
     }
     if (!this.drink) return;
 
-    // const loading = await this._loadingService.loading();
-    // await loading.present();
-
     try {
       this.addToCartLoading = true;
 
-      const result = await this._cartService.addToCart({
+      await this._cartService.addToCart({
         cantidad: this.quantity,
         idItem: this.drink.id,
         descuento: 0.0,
@@ -124,19 +139,11 @@ export class DetailsDrinkPage implements OnInit {
         precioUnidad: this.precioUnitario,
       });
 
-      // if (!result) {
-      //   this._toast.getToast('Error al añadir null', 'middle', 'warning');
-      // }
-
-      // this._toast.getToast('Bebida agregado al carrito', 'middle', 'success');
-
       this.addToCartLoading = false;
     } catch (error) {
       this.addToCartLoading = false;
       console.log(error);
       this._toast.getToast('Error al añadir', 'middle', 'warning');
-    } finally {
-      // loading.dismiss();
     }
   }
 }

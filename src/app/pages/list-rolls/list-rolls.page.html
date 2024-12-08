@@ -1,31 +1,32 @@
 <ion-content [fullscreen]="true">
   @if (rolls) {
-  <ion-card>
+  <ion-card class="back-btn-box">
     <ion-button (click)="pushRouter('/home')" expand="full" fill="clear">
-      Atras
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-card>
-  <div>
-    <ion-card>
-      <ion-searchbar
-        show-clear-button="focus"
-        animated="true"
-        placeholder="Buscar aqui..."
-        (ionInput)="filterrolls($event)"
-      ></ion-searchbar>
-    </ion-card>
+  <div class="search-box">
+    <ion-searchbar
+      show-clear-button="focus"
+      animated="true"
+      placeholder="Buscar aqui..."
+      (ionInput)="filterrolls($event)"
+    ></ion-searchbar>
   </div>
   <div class="box-card">
     @for (roll of filteredRolls; track $index) {
 
-    <ion-card (click)="pushDetails(roll.id)">
-      <ion-card-content>
-        <img src="{{roll.image}}" alt="{{roll.nombre}}" />
-      </ion-card-content>
-      <ion-card-header>
-        <ion-card-title>{{roll.nombre}}</ion-card-title>
-        <ion-card-subtitle>{{roll.descripcion}}</ion-card-subtitle>
-      </ion-card-header>
+    <ion-card class="pizza-card" (click)="pushDetails(roll.id)">
+      <div class="separador">
+        <ion-card-content>
+          <ion-card-title style="color: #efefef"
+            >{{roll.nombre}}</ion-card-title
+          >
+        </ion-card-content>
+        <ion-card-header>
+          <img src="{{roll.image}}" alt="{{roll.nombre}}" class="pizza-image" />
+        </ion-card-header>
+      </div>
     </ion-card>
 
     }

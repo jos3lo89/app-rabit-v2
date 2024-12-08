@@ -13,20 +13,16 @@ import {
   IonItem,
   IonLabel,
   IonDatetime,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   IonButton,
   IonList,
   IonIcon,
-  IonDatetimeButton,
   IonModal,
   IonText,
 } from '@ionic/angular/standalone';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { PdfService } from 'src/app/shared/services/pdf.service';
 import { addIcons } from 'ionicons';
-import { printOutline } from 'ionicons/icons';
+import { printOutline, arrowBackOutline, searchOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
 
 @Component({
@@ -37,7 +33,6 @@ import { Router } from '@angular/router';
   imports: [
     IonText,
     IonModal,
-    IonDatetimeButton,
     IonIcon,
     IonList,
     IonButton,
@@ -51,7 +46,6 @@ import { Router } from '@angular/router';
     IonRow,
     IonGrid,
     IonContent,
-    IonTitle,
     CommonModule,
     IonDatetime,
     FormsModule,
@@ -85,14 +79,13 @@ export class TicketHistoryPage implements OnInit {
   }
 
   constructor() {
-    addIcons({ printOutline });
+    addIcons({ arrowBackOutline, printOutline, searchOutline });
   }
 
   ngOnInit() {}
 
   async fetchTickets() {
     if (!this.startDate) {
-      console.warn('Por favor, selecciona una fecha.');
       return;
     }
 
@@ -108,8 +101,6 @@ export class TicketHistoryPage implements OnInit {
   }
 
   reprintTicket(ticket: any) {
-    console.log('Reimprimiendo ticket:', ticket);
-
     this._pdfService.generarBoleta({
       producto: ticket.products,
       totalPagar: ticket.totalAmount,

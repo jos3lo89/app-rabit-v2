@@ -1,7 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonCard, IonCardTitle, IonButton, IonCardContent, IonGrid, IonList, IonSkeletonText, IonCardHeader } from '@ionic/angular/standalone';
+import {
+  IonCard,
+  IonCardTitle,
+  IonButton,
+  IonCardContent,
+  IonGrid,
+  IonList,
+  IonSkeletonText,
+  IonCardHeader,
+} from '@ionic/angular/standalone';
 import { DrinkDb } from 'src/app/shared/interfaces/drink.interfaces';
 import { DrinkService } from 'src/app/shared/services/drink.service';
 
@@ -10,7 +19,17 @@ import { DrinkService } from 'src/app/shared/services/drink.service';
   templateUrl: './drinks-slider.component.html',
   styleUrls: ['./drinks-slider.component.scss'],
   standalone: true,
-  imports: [IonCardHeader, IonSkeletonText, IonList, IonGrid, IonCardContent, IonButton, IonCardTitle, IonCard,  CommonModule],
+  imports: [
+    IonCardHeader,
+    IonSkeletonText,
+    IonList,
+    IonGrid,
+    IonCardContent,
+    IonButton,
+    IonCardTitle,
+    IonCard,
+    CommonModule,
+  ],
 })
 export class DrinksSliderComponent {
   private _drinkservice = inject(DrinkService);
@@ -27,16 +46,9 @@ export class DrinksSliderComponent {
     this.getingPizzas();
   }
 
-  // ngOnInit() {
-  // }
-
   getingPizzas() {
     this._drinkservice.listingDrinks().subscribe({
       next: (data) => {
-        // const newData = data.map((p, i) => {
-        //   return i < 2 && p;
-        // });
-
         this.drinks = data;
       },
       error: (error) => {
@@ -50,7 +62,6 @@ export class DrinksSliderComponent {
   }
 
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-drink'], {
       queryParams: {
         id,

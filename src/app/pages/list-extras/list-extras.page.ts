@@ -1,17 +1,41 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonCard, IonButton, IonSearchbar, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSpinner } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonCard,
+  IonButton,
+  IonSearchbar,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonSpinner,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { ExtrasService } from 'src/app/shared/services/extras.service';
 import { Router } from '@angular/router';
 import { ExtrasDb } from 'src/app/shared/interfaces/extras.interfaces';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-list-extras',
   templateUrl: './list-extras.page.html',
   styleUrls: ['./list-extras.page.scss'],
   standalone: true,
-  imports: [IonSpinner, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCardContent, IonSearchbar, IonButton, IonCard, IonContent,  CommonModule, FormsModule],
+  imports: [
+    IonIcon,
+    IonSpinner,
+    IonCardTitle,
+    IonCardHeader,
+    IonCardContent,
+    IonSearchbar,
+    IonButton,
+    IonCard,
+    IonContent,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class ListExtrasPage implements OnInit {
   private _extrasService = inject(ExtrasService);
@@ -19,7 +43,9 @@ export class ListExtrasPage implements OnInit {
   extras: ExtrasDb[] | null = null;
   filteredextrasF: ExtrasDb[] | null = null;
 
-  constructor() {}
+  constructor() {
+    addIcons({ arrowBackOutline });
+  }
 
   ngOnInit() {
     this.getingDrinks();
@@ -50,7 +76,6 @@ export class ListExtrasPage implements OnInit {
     );
   }
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-extras'], {
       queryParams: {
         id,

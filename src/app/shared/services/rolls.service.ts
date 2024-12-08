@@ -26,8 +26,6 @@ export class RollsService {
 
       if (!imgUrl) return null;
 
-      console.log(imgUrl);
-
       const docRef = collection(this._fireStore, this.nameCollection);
 
       return await addDoc(docRef, {

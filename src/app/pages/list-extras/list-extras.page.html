@@ -1,31 +1,30 @@
 <ion-content [fullscreen]="true">
   @if (extras) {
-  <ion-card>
+  <ion-card class="back-btn-box">
     <ion-button (click)="pushRouter('/home')" expand="full" fill="clear">
-      Atras
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-card>
-  <div>
-    <ion-card>
-      <ion-searchbar
-        show-clear-button="focus"
-        animated="true"
-        placeholder="Buscar aqui..."
-        (ionInput)="filterextras($event)"
-      ></ion-searchbar>
-    </ion-card>
+  <div class="search-box">
+    <ion-searchbar
+      show-clear-button="focus"
+      animated="true"
+      placeholder="Buscar aqui..."
+      (ionInput)="filterextras($event)"
+    ></ion-searchbar>
   </div>
   <div class="box-card">
     @for (extra of filteredextrasF; track $index) {
 
-    <ion-card (click)="pushDetails(extra.id)">
-      <ion-card-content>
-        <img src="{{extra.image}}" alt="{{extra.nombre}}" />
-      </ion-card-content>
-      <ion-card-header>
-        <ion-card-title>{{extra.nombre}}</ion-card-title>
-        <!-- <ion-card-subtitle>{{extra.descripcion}}</ion-card-subtitle> -->
-      </ion-card-header>
+    <ion-card class="pizza-card" (click)="pushDetails(extra.id)">
+      <div class="separador">
+        <ion-card-content>
+          <ion-card-title style="color: #efefef">{{extra.nombre}}</ion-card-title>
+        </ion-card-content>
+        <ion-card-header>
+          <img src="{{extra.image}}" alt="{{extra.nombre}}" />
+        </ion-card-header>
+      </div>
     </ion-card>
 
     }

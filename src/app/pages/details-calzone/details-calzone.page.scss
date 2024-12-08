@@ -1,13 +1,7 @@
-.box-img {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-
-  .img-detalles {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-  }
+.img-detalles {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
 }
 
 .form-box {
@@ -37,16 +31,15 @@ ion-card {
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
+  margin-bottom: 10px;
   margin-left: 10px;
   margin-right: 10px;
 }
 
 .img-pizza-details {
-  max-width: 200px;
-  height: auto;
+  max-height: 150px;
+  width: auto;
   border-radius: 15px;
-  // margin-left: auto;
-  // margin-right: auto;
 }
 
 .box-details {
@@ -63,7 +56,6 @@ ion-card {
 
 .box-type {
   display: flex;
-  // flex-direction: column;
   justify-content: space-around;
   align-items: center;
   gap: 70px;
@@ -72,6 +64,7 @@ ion-card {
   padding-bottom: 7px;
   margin-left: 10px;
   margin-right: 10px;
+
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -82,7 +75,6 @@ ion-card {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  // gap: 7px;
 }
 
 .precios-box {
@@ -90,6 +82,8 @@ ion-card {
   justify-content: space-around;
   align-items: center;
   padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .btns-precios {
@@ -103,7 +97,6 @@ ion-card {
   justify-content: space-around;
   align-items: center;
   gap: 20px;
-  // padding: 15px;
 }
 
 .detalles-card-box .detalle-card {
@@ -124,4 +117,65 @@ ion-card {
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
+
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.option-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.box-back-btn {
+  max-width: 70px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.box-detalles {
+  max-width: 330px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.precio-box {
+  max-width: 330px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.box-compra {
+  max-width: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 580px) {
+  .box-detalles {
+    max-width: none;
+  }
+
+  .precio-box {
+    max-width: none;
+  }
+}
+
+.card-duo {
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cuatro-estaciones-card {
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }

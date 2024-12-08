@@ -86,13 +86,10 @@ export class AddRollsPage {
 
   async addRoll() {
     try {
-      console.log('wdaff', this.form.value);
       const { descripcion, nombre, precio } = this.form.value;
 
       if (!this.fotoRoll) {
-        console.log('Insertar un foto');
         this._toast.getToast('Insertar un foto', 'middle', 'warning');
-
         return;
       }
 

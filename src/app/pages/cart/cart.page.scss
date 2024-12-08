@@ -3,8 +3,26 @@ ion-spinner {
   height: 100px;
 }
 
-
 ion-thumbnail {
   --size: 120px;
   --border-radius: 14px;
+}
+.cart-items-box {
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.box-back-btn {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 20px;
+}
+
+.box-btn-imprime {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
 }

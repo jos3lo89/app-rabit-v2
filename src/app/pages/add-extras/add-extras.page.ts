@@ -57,7 +57,7 @@ export class AddExtrasPage implements OnInit {
   private _router = inject(Router);
   private _uploadImageService = inject(UploadImageService);
   private _extraService = inject(ExtrasService);
-  private _toastService = inject(ToastService);
+  private _toast = inject(ToastService);
 
   fotoExtra: string | null = null;
   openModal = false;
@@ -79,24 +79,19 @@ export class AddExtrasPage implements OnInit {
     this.closeModal();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   async addExtras() {
     try {
       this.addLoading = true;
-      console.log(this.form.value);
       const { descripcion, nombre, precio } = this.form.value;
 
       if (!this.fotoExtra) {
-        console.log('falta la foto');
-
+        this._toast.getToast('Insertar un foto', 'middle', 'warning');
         return;
       }
 
-      if (!descripcion || !nombre || !precio) {
-        console.log('Complete el fomulario');
-        return;
-      }
+      if (!descripcion || !nombre || !precio) return;
 
       await this._extraService.addExtras(
         {
@@ -112,13 +107,9 @@ export class AddExtrasPage implements OnInit {
 
       this.fotoExtra = null;
 
-      this._toastService.getToast(
-        'Extras agergado correctament',
-        'middle',
-        'success'
-      );
+      this._toast.getToast('Extras agergado correctament', 'middle', 'success');
     } catch (error) {
-      this._toastService.getToast(
+      this._toast.getToast(
         'Error al registrar el producto',
         'middle',
         'danger'

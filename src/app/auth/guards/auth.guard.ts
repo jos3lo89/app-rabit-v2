@@ -10,8 +10,6 @@ export const authGuard = (): CanActivateFn => {
 
     return authService.authState$.pipe(
       map((state) => {
-        console.log('estado del auth', state);
-
         if (!state) {
           router.navigateByUrl('/auth/login');
           return false;

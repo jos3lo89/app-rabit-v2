@@ -19,7 +19,6 @@ export class PdfService {
   };
 
   private ticketInfo = {
-    // titulo: 'Boleta de venta electrónica',
     titulo: 'Ticket',
     numero: Math.floor(Math.random() * (999 - 100 + 1) + 100),
     fechaDeEmision: new Date().toLocaleDateString(),

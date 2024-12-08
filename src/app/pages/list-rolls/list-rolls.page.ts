@@ -1,21 +1,44 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonCard, IonButton, IonSearchbar, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSpinner } from "@ionic/angular/standalone"
-import { PizzaService } from 'src/app/shared/services/pizza.service';
+import {
+  IonContent,
+  IonCard,
+  IonButton,
+  IonSearchbar,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonSpinner,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { RollsDb } from 'src/app/shared/interfaces/rolls.interface';
 import { RollsService } from 'src/app/shared/services/rolls.service';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-list-rolls',
   templateUrl: './list-rolls.page.html',
   styleUrls: ['./list-rolls.page.scss'],
   standalone: true,
-  imports: [IonSpinner, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCardContent, IonSearchbar, IonButton, IonCard, IonContent,  CommonModule, FormsModule]
+  imports: [
+    IonIcon,
+    IonSpinner,
+    IonCardTitle,
+    IonCardHeader,
+    IonCardContent,
+    IonSearchbar,
+    IonButton,
+    IonCard,
+    IonContent,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class ListRollsPage {
-
   private _rollsService = inject(RollsService);
   private _router = inject(Router);
 
@@ -23,10 +46,9 @@ export class ListRollsPage {
   filteredRolls: RollsDb[] | null = null;
 
   constructor() {
-
+    addIcons({ arrowBackOutline });
     this.getingRolls();
   }
-
 
   getingRolls() {
     this._rollsService.listingRolls().subscribe({
@@ -41,7 +63,6 @@ export class ListRollsPage {
   }
 
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-rolls'], {
       queryParams: {
         id,
@@ -63,11 +84,6 @@ export class ListRollsPage {
     );
   }
   pushRouter(route: string) {
-    this._router.navigateByUrl(route)
+    this._router.navigateByUrl(route);
   }
-
-
-
-
-
 }

@@ -1,7 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonCardTitle, IonCard, IonButton, IonCardContent, IonList, IonGrid, IonCardHeader, IonSkeletonText } from '@ionic/angular/standalone';
+import {
+  IonCardTitle,
+  IonCard,
+  IonButton,
+  IonCardContent,
+  IonList,
+  IonGrid,
+  IonCardHeader,
+  IonSkeletonText,
+} from '@ionic/angular/standalone';
 import { ExtrasDb } from 'src/app/shared/interfaces/extras.interfaces';
 import { ExtrasService } from 'src/app/shared/services/extras.service';
 
@@ -10,7 +19,17 @@ import { ExtrasService } from 'src/app/shared/services/extras.service';
   templateUrl: './extras-slider.component.html',
   styleUrls: ['./extras-slider.component.scss'],
   standalone: true,
-  imports: [IonSkeletonText, IonCardHeader, IonGrid, IonList, IonCardContent, IonButton, IonCard, IonCardTitle, CommonModule],
+  imports: [
+    IonSkeletonText,
+    IonCardHeader,
+    IonGrid,
+    IonList,
+    IonCardContent,
+    IonButton,
+    IonCard,
+    IonCardTitle,
+    CommonModule,
+  ],
 })
 export class ExtrasSliderComponent {
   private _extrasService = inject(ExtrasService);
@@ -27,16 +46,9 @@ export class ExtrasSliderComponent {
     this.getingPizzas();
   }
 
-  // ngOnInit() {
-  // }
-
   getingPizzas() {
     this._extrasService.listingExtras().subscribe({
       next: (data) => {
-        // const newData = data.map((p, i) => {
-        //   return i < 2 && p;
-        // });
-
         this.extras = data;
       },
       error: (error) => {
@@ -50,7 +62,6 @@ export class ExtrasSliderComponent {
   }
 
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-extras'], {
       queryParams: {
         id,

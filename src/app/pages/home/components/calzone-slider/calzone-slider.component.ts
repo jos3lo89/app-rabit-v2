@@ -38,7 +38,6 @@ export class CalzoneSliderComponent {
   }
 
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-calzone'], {
       queryParams: {
         id,

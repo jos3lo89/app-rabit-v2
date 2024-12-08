@@ -72,7 +72,6 @@ export class CartService {
     const userId = this._currentUserId();
 
     if (!this._isAuth || !userId) {
-      console.log('Usuario no autenticado.');
       return null;
     }
 

@@ -4,7 +4,11 @@
   <ion-card>
     <ion-card-title style="margin: 0">
       <div style="display: flex; width: 100%; justify-content: space-between">
-        <ion-button fill="clear" (click)="pushRouter('/list-pizzas')"
+        <ion-button
+          style="margin-left: 10px; margin-top: 10px"
+          shape="round"
+          size="small"
+          (click)="pushRouter('/list-pizzas')"
           >Pizzas</ion-button
         >
         <ion-button fill="clear" slot="end" (click)="toggleVisibility()">
@@ -141,38 +145,55 @@
     </ion-card-title>
     @if (isContentVisible) {
 
-    <ion-card-content style="margin: 0">
-      <ion-list class="horizontal-list">
-        <ion-grid>
-          @for (pizza of pizzas; track $index) {
+    <ion-list class="horizontal-list">
+      <ion-grid>
+        @for (pizza of pizzas; track $index) {
 
-          <ion-card class="box-region" (click)="pushDetails(pizza.id)">
-            <ion-card-content
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <img
-                class="image-img"
-                src="{{ pizza.image }}"
-                alt="{{ pizza.nombre }}"
-                style="max-height: 60px; width: auto"
-              />
-            </ion-card-content>
-            <ion-card-header>
-              <ion-card-title style="max-width: 150px">
-                {{ pizza.nombre }}
-              </ion-card-title>
+        <ion-card class="box-region" (click)="pushDetails(pizza.id)">
+          <ion-card-content
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <img
+              class="image-img"
+              src="{{ pizza.image }}"
+              alt="{{ pizza.nombre }}"
+              style="max-height: 60px; width: auto"
+            />
+          </ion-card-content>
+          <ion-card-header>
+            <ion-card-title style="max-width: 150px">
+              {{ pizza.nombre }}
+            </ion-card-title>
+          </ion-card-header>
 
-              <!-- <ion-card-subtitle>{{"lagarto"}}</ion-card-subtitle> -->
-            </ion-card-header>
-          </ion-card>
+          @if (pizza.descuento !== "0.0") {
+
+          <div
+            style="
+              background-color: indigo;
+              position: absolute;
+              top: 0;
+              right: 0;
+              padding: 5px;
+              border-radius: 10px;
+              color: white;
+            "
+          >
+            {{
+              pizza.descuento == "0.1"
+                ? 10
+                : pizza.descuento == "0.2"
+                ? 20
+                : pizza.descuento == "0.3" && 30
+            }}% off
+          </div>
+
           }
-        </ion-grid>
-      </ion-list>
-    </ion-card-content>
+        </ion-card>
+
+        }
+      </ion-grid>
+    </ion-list>
     }
   </ion-card>
 </div>

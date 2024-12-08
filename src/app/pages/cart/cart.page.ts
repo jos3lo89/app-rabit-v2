@@ -21,7 +21,7 @@ import {
   trashOutline,
 } from 'ionicons/icons';
 import { PdfService } from 'src/app/shared/services/pdf.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-cart',

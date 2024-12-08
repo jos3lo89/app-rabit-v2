@@ -13,10 +13,53 @@
   box-shadow: var(--box-shadow);
 }
 
-
 @media (max-width: 600px) {
   .small-modal {
     --width: 90%; /* Ajusta el ancho para pantallas pequeñas */
     --height: auto; /* Permite que el contenido determine la altura */
   }
+}
+
+.box-margin {
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.back-btn-box {
+  max-width: 70px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.box-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header-text-box {
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.box-btns-fecha-search {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+
+
+.modal-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
 }

@@ -1,17 +1,41 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonCard, IonButton, IonSearchbar, IonCardContent, IonCardTitle, IonCardHeader, IonCardSubtitle, IonSpinner } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonCard,
+  IonButton,
+  IonSearchbar,
+  IonCardContent,
+  IonCardTitle,
+  IonCardHeader,
+  IonSpinner,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { CalzoneService } from 'src/app/shared/services/calzone.service';
 import { Router } from '@angular/router';
 import { CalzoneDB } from 'src/app/shared/interfaces/calzone.interfaces';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-list-calzone',
   templateUrl: './list-calzone.page.html',
   styleUrls: ['./list-calzone.page.scss'],
   standalone: true,
-  imports: [IonSpinner, IonCardSubtitle, IonCardHeader, IonCardTitle, IonCardContent, IonSearchbar, IonButton, IonCard, IonContent,  CommonModule, FormsModule],
+  imports: [
+    IonIcon,
+    IonSpinner,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonSearchbar,
+    IonButton,
+    IonCard,
+    IonContent,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class ListCalzonePage {
   private _calzoneService = inject(CalzoneService);
@@ -21,6 +45,7 @@ export class ListCalzonePage {
   filteredCalzone: CalzoneDB[] | null = null;
 
   constructor() {
+    addIcons({ arrowBackOutline });
     this.getingCalzone();
   }
 
@@ -29,7 +54,6 @@ export class ListCalzonePage {
       next: (data) => {
         this.calzones = data;
         this.filteredCalzone = data;
-        console.log(data);
       },
       error: (error) => {
         console.log(error);
@@ -38,7 +62,6 @@ export class ListCalzonePage {
   }
 
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-calzone'], {
       queryParams: {
         id,

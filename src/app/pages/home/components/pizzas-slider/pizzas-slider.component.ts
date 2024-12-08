@@ -1,7 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonCard, IonCardTitle, IonButton, IonCardContent, IonList, IonGrid, IonCardHeader, IonSkeletonText } from '@ionic/angular/standalone';
+import {
+  IonCard,
+  IonCardTitle,
+  IonButton,
+  IonCardContent,
+  IonList,
+  IonGrid,
+  IonCardHeader,
+  IonSkeletonText,
+} from '@ionic/angular/standalone';
 import { PizzaDb } from 'src/app/shared/interfaces/pizza.interfaces';
 import { PizzaService } from 'src/app/shared/services/pizza.service';
 
@@ -10,7 +19,17 @@ import { PizzaService } from 'src/app/shared/services/pizza.service';
   templateUrl: './pizzas-slider.component.html',
   styleUrls: ['./pizzas-slider.component.scss'],
   standalone: true,
-  imports: [IonSkeletonText, IonCardHeader, IonGrid, IonList, IonCardContent, IonButton, IonCardTitle, IonCard, CommonModule],
+  imports: [
+    IonSkeletonText,
+    IonCardHeader,
+    IonGrid,
+    IonList,
+    IonCardContent,
+    IonButton,
+    IonCardTitle,
+    IonCard,
+    CommonModule,
+  ],
 })
 export class PizzasSliderComponent {
   private _pizzaService = inject(PizzaService);
@@ -30,10 +49,6 @@ export class PizzasSliderComponent {
   getingPizzas() {
     this._pizzaService.listingPizzas().subscribe({
       next: (data) => {
-        // const newData = data.map((p, i) => {
-        //   return i < 2 && p;
-        // });
-
         this.pizzas = data;
       },
       error: (error) => {
@@ -47,7 +62,6 @@ export class PizzasSliderComponent {
   }
 
   pushDetails(id: string) {
-    console.log(id);
     this._router.navigate(['/details-pizza'], {
       queryParams: {
         id,

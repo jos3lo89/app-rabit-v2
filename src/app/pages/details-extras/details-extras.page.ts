@@ -12,9 +12,12 @@ import {
   IonCard,
   IonButton,
   IonCardTitle,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-details-extras',
@@ -22,6 +25,7 @@ import { LoadingService } from 'src/app/shared/services/loading.service';
   styleUrls: ['./details-extras.page.scss'],
   standalone: true,
   imports: [
+    IonIcon,
     IonCardTitle,
     IonButton,
     IonCard,
@@ -38,7 +42,7 @@ export class DetailsExtrasPage implements OnInit {
   private _router = inject(Router);
   private _toast = inject(ToastService);
   private _cartService = inject(CartService);
-  private _loadingService = inject(LoadingService);
+
   params = {
     id: '',
     backUrl: '',
@@ -63,9 +67,6 @@ export class DetailsExtrasPage implements OnInit {
     }
     if (!this.extras) return;
 
-    // const loading = await this._loadingService.loading();
-    // await loading.present();
-
     try {
       this.addToCartLoading = true;
 
@@ -80,19 +81,11 @@ export class DetailsExtrasPage implements OnInit {
         precioUnidad: this.precioUnitario,
       });
 
-      // if (!result) {
-      //   this._toast.getToast('Error al añadir null', 'middle', 'warning');
-      // }
-
-      // this._toast.getToast('Extra agregado al carrito', 'middle', 'success');
-
       this.addToCartLoading = false;
     } catch (error) {
-      this.addToCartLoading = false;
       console.log(error);
+      this.addToCartLoading = false;
       this._toast.getToast('Error al añadir', 'middle', 'warning');
-    } finally {
-      // loading.dismiss();
     }
   }
 
@@ -117,6 +110,8 @@ export class DetailsExtrasPage implements OnInit {
   }
 
   constructor() {
+    addIcons({ arrowBackOutline });
+
     this._activatedRoute.queryParams.subscribe((param) => {
       if (param['id']) {
         this.params.id = param['id'];
@@ -138,7 +133,6 @@ export class DetailsExtrasPage implements OnInit {
   async ionViewWillEnter() {
     this._calzoneService.gettingExtraWithId(this.params.id).subscribe({
       next: (data) => {
-        console.log(data);
         this.extras = data;
         this.precioUnitario = this.extras.precio;
         this.onPriceChange();

@@ -1,7 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonCard, IonCardTitle, IonButton, IonCardContent, IonGrid, IonCardHeader, IonList, IonSkeletonText } from '@ionic/angular/standalone';
+import {
+  IonCard,
+  IonCardTitle,
+  IonButton,
+  IonCardContent,
+  IonGrid,
+  IonCardHeader,
+  IonList,
+  IonSkeletonText,
+} from '@ionic/angular/standalone';
 import { RollsDb } from 'src/app/shared/interfaces/rolls.interface';
 import { RollsService } from 'src/app/shared/services/rolls.service';
 
@@ -10,7 +19,17 @@ import { RollsService } from 'src/app/shared/services/rolls.service';
   templateUrl: './rolls-slider.component.html',
   styleUrls: ['./rolls-slider.component.scss'],
   standalone: true,
-  imports: [IonSkeletonText, IonList, IonCardHeader, IonGrid, IonCardContent, IonButton, IonCardTitle, IonCard, CommonModule],
+  imports: [
+    IonSkeletonText,
+    IonList,
+    IonCardHeader,
+    IonGrid,
+    IonCardContent,
+    IonButton,
+    IonCardTitle,
+    IonCard,
+    CommonModule,
+  ],
 })
 export class RollsSliderComponent {
   private _rollsService = inject(RollsService);
@@ -37,7 +56,6 @@ export class RollsSliderComponent {
     this._route.navigateByUrl(url);
   }
   pushDetails(id: string) {
-    console.log(id);
     this._route.navigate(['/details-rolls'], {
       queryParams: {
         id,

@@ -14,7 +14,10 @@
             fill="solid"
             placeholder="Ingrese su correo"
             type="email"
-          ></ion-input>
+          >
+          <ion-icon slot="start" name="mail-sharp" aria-hidden="true"></ion-icon>
+
+        </ion-input>
           <br />
           <ion-input
             formControlName="password"
@@ -23,7 +26,12 @@
             fill="solid"
             placeholder="Ingrese su contraseña"
             type="password"
-          ></ion-input>
+          >
+          <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+
+          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+
+        </ion-input>
           <br /><br />
 
           <ion-button
