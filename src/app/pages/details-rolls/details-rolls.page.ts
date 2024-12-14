@@ -69,6 +69,7 @@ export class DetailsRollsPage implements OnInit {
         message: 'Iniciar sesion para agregar al carrito',
         position: 'bottom',
         color: 'warning',
+        duration: 1000,
       });
       await toast.present();
 
@@ -99,6 +100,7 @@ export class DetailsRollsPage implements OnInit {
         message: 'Error al añadir',
         position: 'bottom',
         color: 'warning',
+        duration: 1000,
       });
 
       await toast.present();

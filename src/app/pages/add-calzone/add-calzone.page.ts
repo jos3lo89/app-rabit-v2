@@ -59,7 +59,7 @@ export class AddCalzonePage {
   private _uploadImageService = inject(UploadImageService);
   private _calzoneService = inject(CalzoneService);
   // private _toast = inject(ToastService);
-  private _toastController = inject(ToastController)
+  private _toastController = inject(ToastController);
 
   dynamicPrice: number = 0;
   openModal = false;
@@ -75,7 +75,7 @@ export class AddCalzonePage {
   });
 
   constructor() {
-    addIcons({arrowBackOutline,close,camera,image});
+    addIcons({ arrowBackOutline, close, camera, image });
   }
 
   async addCalzone() {
@@ -97,30 +97,31 @@ export class AddCalzonePage {
         this.calzoneFoto
       );
 
-//  await     this._toast.getToast('registrado con exito', 'middle', 'success');
+      //  await     this._toast.getToast('registrado con exito', 'middle', 'success');
 
-const toast = await this._toastController.create({
-  message :"Registrado con exito",
-  position: "top",
-  color: "success"
-})
-await toast.present()
+      const toast = await this._toastController.create({
+        message: 'Registrado con exito',
+        position: 'top',
+        color: 'success',
+        duration: 1000,
+      });
+      await toast.present();
 
       this.form.reset();
       this.calzoneFoto = null;
       this.addLoading = false;
     } catch (error) {
       console.log(error);
-    //  await this._toast.getToast('Error al registrar', 'bottom', 'danger');
+      //  await this._toast.getToast('Error al registrar', 'bottom', 'danger');
 
+      const toast = await this._toastController.create({
+        message: 'Error al registrarse',
+        position: 'bottom',
+        color: 'danger',
+        duration: 1000,
+      });
 
-    const toast = await this._toastController.create({
-      message: "Error al registrarse",
-      position: "bottom",
-      color: "danger"
-    })
-
-    await toast.present() 
+      await toast.present();
 
       this.addLoading = false;
     }

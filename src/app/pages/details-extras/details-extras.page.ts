@@ -69,6 +69,7 @@ export class DetailsExtrasPage implements OnInit {
         message: 'Iniciar sesion para agregar al carrito',
         color: 'warning',
         position: 'middle',
+        duration: 1500,
       });
 
       await toast.present();
@@ -100,6 +101,7 @@ export class DetailsExtrasPage implements OnInit {
         message: 'Error al añadir',
         position: 'bottom',
         color: 'warning',
+        duration: 1000,
       });
 
       await toast.present();

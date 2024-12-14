@@ -31,7 +31,6 @@ import { UploadImageService } from 'src/app/shared/services/upload-image.service
 import { addIcons } from 'ionicons';
 import { camera, close, image, arrowBackOutline } from 'ionicons/icons';
 import { RollsService } from 'src/app/shared/services/rolls.service';
-import { ToastService } from 'src/app/shared/services/toast.service';
 import { RollsDb } from 'src/app/shared/interfaces/rolls.interface';
 
 @Component({
@@ -95,7 +94,7 @@ export class AddRollsPage {
 
         const toast = await this._toastControler.create({
           message: 'Insertar un foto',
-          duration: 1500,
+          duration: 1000,
           position: 'bottom',
           color: 'warning',
         });
@@ -121,7 +120,7 @@ export class AddRollsPage {
       // await this._toast.getToast('registrado con exito', 'middle', 'success');
       const toast = await this._toastControler.create({
         message: 'registrado con exito',
-        duration: 1500,
+        duration: 1000,
         position: 'top',
         color: 'success',
       });
@@ -137,7 +136,7 @@ export class AddRollsPage {
 
       const toast = await this._toastControler.create({
         message: 'Error al registrar',
-        duration: 1500,
+        duration: 1000,
         color: 'danger',
         position: 'bottom',
       });

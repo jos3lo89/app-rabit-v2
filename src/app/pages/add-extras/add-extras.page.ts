@@ -94,6 +94,7 @@ export class AddExtrasPage implements OnInit {
           message: 'Debe subir un foto.',
           position: 'middle',
           color: 'warning',
+          duration: 1000,
         });
         return;
       }
@@ -120,6 +121,7 @@ export class AddExtrasPage implements OnInit {
         message: 'Extra registrado.',
         position: 'top',
         color: 'success',
+        duration: 1000,
       });
     } catch (error) {
       // await this._toast.getToast(
@@ -132,6 +134,7 @@ export class AddExtrasPage implements OnInit {
         message: 'Error al registrar el extra.',
         position: 'bottom',
         color: 'danger',
+        duration: 1000,
       });
       await toast.present();
 

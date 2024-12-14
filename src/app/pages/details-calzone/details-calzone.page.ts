@@ -125,7 +125,7 @@ export class DetailsCalzonePage implements OnInit {
 
       const toast = await this._toastController.create({
         message: 'Iniciar sesion para agregar al carrito',
-        duration: 1500,
+        duration: 1000,
         position: 'bottom',
         color: 'warning',
       });
@@ -158,7 +158,7 @@ export class DetailsCalzonePage implements OnInit {
       const toast = await this._toastController.create({
         message: 'Error al añadir',
         position: 'bottom',
-        duration: 1500,
+        duration: 1000,
 
         color: 'warning',
       });

@@ -7,6 +7,7 @@ import {
   IonSpinner,
   IonIcon,
   AlertController,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { User } from '@angular/fire/auth';
@@ -25,10 +26,11 @@ import { RolesService } from 'src/app/shared/services/roles.service';
 })
 export class ProfilePage implements OnInit {
   private _authService = inject(AuthService);
-  private _toast = inject(ToastService);
+  // private _toast = inject(ToastService);
   private _router = inject(Router);
   private _alertController = inject(AlertController);
   private _rolesService = inject(RolesService);
+  private _toastController = inject(ToastController);
 
   user: User | null = null;
   currentRole: string | null = null;
@@ -70,13 +72,34 @@ export class ProfilePage implements OnInit {
             try {
               await this._authService.cerrarSesion();
               this._router.navigateByUrl('/home');
- await             this._toast.getToast('Cerraste sesión', 'middle', 'warning');
+              // await this._toast.getToast(
+              //   'Cerraste sesión',
+              //   'middle',
+              //   'warning'
+              // );
+
+              const toast = await this._toastController.create({
+                message: 'Cerraste sesión',
+                duration: 1000,
+                position: 'middle',
+                color: 'warning',
+              });
+
+              await toast.present();
             } catch (error) {
-      await        this._toast.getToast(
-                'Error al cerrar sesión',
-                'middle',
-                'danger'
-              );
+              // await this._toast.getToast(
+              //   'Error al cerrar sesión',
+              //   'middle',
+              //   'danger'
+              // );
+              const toast = await this._toastController.create({
+                message: 'Error al cerrar sesión',
+
+                duration: 1000,
+                position: 'middle',
+                color: 'danger',
+              });
+              await toast.present();
               console.log(error);
             }
           },

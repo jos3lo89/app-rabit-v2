@@ -115,8 +115,8 @@ export class AddPizzaPage implements OnInit {
         const toast = await this._tastController.create({
           message: 'Corrija el formulario',
           position: 'bottom',
-          duration: 1500,
           color: 'warning',
+          duration: 1000,
         });
         await toast.present();
         return;
@@ -128,7 +128,7 @@ export class AddPizzaPage implements OnInit {
           message: 'Agregue una foto',
           color: 'warning',
           position: 'bottom',
-          duration: 1500,
+          duration: 1000,
         });
         await toast.present();
         return;
@@ -145,7 +145,7 @@ export class AddPizzaPage implements OnInit {
         message: 'Pizza registrado',
         color: 'success',
         position: 'top',
-        duration: 1500,
+        duration: 1000,
       });
       this.guardando = false;
     } catch (error) {
@@ -159,7 +159,7 @@ export class AddPizzaPage implements OnInit {
       const toast = await this._tastController.create({
         message: 'No se pudo registrar la pizza',
         position: 'bottom',
-        duration: 1500,
+        duration: 1000,
         color: 'danger',
       });
       await toast.present();

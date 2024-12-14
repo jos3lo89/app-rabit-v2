@@ -125,7 +125,7 @@ export class DetailsDrinkPage implements OnInit {
 
       const toast = await this._toastController.create({
         message: 'Iniciar sesion para agregar al carrito',
-        duration: 1500,
+        duration: 1000,
         color: 'warning',
         position: 'bottom',
       });
@@ -157,7 +157,7 @@ export class DetailsDrinkPage implements OnInit {
       // await this._toast.getToast('Error al añadir', 'middle', 'warning');
       const toast = await this._toastController.create({
         message: 'Error al añadir',
-        duration: 1500,
+        duration: 1000,
         position: 'bottom',
         color: 'warning',
       });

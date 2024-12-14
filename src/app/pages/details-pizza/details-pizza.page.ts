@@ -219,8 +219,9 @@ export class DetailsPizzaPage implements OnInit {
 
       const toast = await this._toastController.create({
         message: 'Por favor, selecciona todas las opciones requeridas',
-        position: 'bottom',
         color: 'danger',
+        position: 'middle',
+        duration: 1000,
       });
 
       await toast.present();
@@ -237,8 +238,10 @@ export class DetailsPizzaPage implements OnInit {
 
       const toast = await this._toastController.create({
         message: 'Iniciar sesion para agregar al carrito',
-        position: 'bottom',
         color: 'warning',
+
+        position: 'middle',
+        duration: 1000,
       });
 
       await toast.present();
@@ -250,8 +253,9 @@ export class DetailsPizzaPage implements OnInit {
       // await this._toast.getToast('fallo traer la pizza', 'middle', 'warning');
       const toast = await this._toastController.create({
         message: 'fallo traer la pizza',
-        position: 'bottom',
         color: 'warning',
+        duration: 1000,
+        position: 'bottom',
       });
 
       await toast.present();
@@ -308,6 +312,7 @@ export class DetailsPizzaPage implements OnInit {
         message: 'Error al añadir',
         position: 'bottom',
         color: 'warning',
+        duration: 1000,
       });
 
       await toast.present();

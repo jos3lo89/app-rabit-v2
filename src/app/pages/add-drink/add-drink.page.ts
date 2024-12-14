@@ -48,7 +48,7 @@ export class AddDrinkPage implements OnInit {
   private _uploadImage = inject(UploadImageService);
   private _drinkService = inject(DrinkService);
   // private _toast = inject(ToastService);
-  private _toastController = inject(ToastController)
+  private _toastController = inject(ToastController);
 
   form = formBuilder();
   openModal = false;
@@ -69,29 +69,29 @@ export class AddDrinkPage implements OnInit {
 
   async addDrink() {
     if (!this.fotoBebida) {
-//  await     this._toast.getToast('Debe ingresar una imagen', 'middle', 'warning');
+      //  await     this._toast.getToast('Debe ingresar una imagen', 'middle', 'warning');
 
-const toast = await this._toastController.create({
-  message: "Debe ingresar un imagen."
-})
+      const toast = await this._toastController.create({
+        message: 'Debe ingresar un imagen.',
+      });
 
-await toast.present()
+      await toast.present();
       return;
     }
 
     const { descripcion, nombre, precio } = this.form.value;
 
     if (!descripcion || !nombre || !precio) {
-    //  await this._toast.getToast('complete el formulario', 'middle', 'warning');
+      //  await this._toast.getToast('complete el formulario', 'middle', 'warning');
 
-    const toast = await this._toastController.create({
-      message: "Complete el formulario.",
-      position: "bottom",
-      color: "warning"
-    })
+      const toast = await this._toastController.create({
+        message: 'Complete el formulario.',
+        position: 'bottom',
+        color: 'warning',
+        duration: 1000,
+      });
 
-    await toast.present()
-
+      await toast.present();
 
       return;
     }
@@ -107,12 +107,12 @@ await toast.present()
       // await this._toast.getToast('Bebida guardada', 'middle', 'success');
 
       const toast = await this._toastController.create({
-        message: "Bebida guardada.",
-        position: "top",
-        color: "success"
-      })
-      await toast.present()
-
+        message: 'Bebida guardada.',
+        position: 'top',
+        color: 'success',
+        duration: 1000,
+      });
+      await toast.present();
 
       this.form.reset();
       this.fotoBebida = null;
@@ -122,11 +122,12 @@ await toast.present()
       // await this._toast.getToast('Error al guardar la bebida', 'middle', 'danger');
 
       const toast = await this._toastController.create({
-        message: "Error al registrar la bebida.",
-        position: "bottom",
-        color: "danger"
-      })
-await toast.present()
+        message: 'Error al registrar la bebida.',
+        position: 'bottom',
+        color: 'danger',
+        duration: 1000,
+      });
+      await toast.present();
 
       this.guardando = false;
     }
