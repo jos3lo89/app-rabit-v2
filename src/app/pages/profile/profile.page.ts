@@ -70,9 +70,9 @@ export class ProfilePage implements OnInit {
             try {
               await this._authService.cerrarSesion();
               this._router.navigateByUrl('/home');
-              this._toast.getToast('Cerraste sesión', 'middle', 'warning');
+ await             this._toast.getToast('Cerraste sesión', 'middle', 'warning');
             } catch (error) {
-              this._toast.getToast(
+      await        this._toast.getToast(
                 'Error al cerrar sesión',
                 'middle',
                 'danger'

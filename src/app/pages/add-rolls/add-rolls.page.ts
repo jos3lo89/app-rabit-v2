@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Injector, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -23,6 +23,7 @@ import {
   IonLabel,
   IonCardContent,
   IonTextarea,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { CameraSource } from '@capacitor/camera';
@@ -65,7 +66,8 @@ export class AddRollsPage {
   private _router = inject(Router);
   private _uploadImageService = inject(UploadImageService);
   private _rollsService = inject(RollsService);
-  private _toast = inject(ToastService);
+  // private _toast = inject(ToastService);
+  private _toastControler = inject(ToastController);
 
   dynamicPrice: number = 0;
   openModal = false;
@@ -81,7 +83,7 @@ export class AddRollsPage {
   });
 
   constructor() {
-    addIcons({arrowBackOutline,close,camera,image});
+    addIcons({ arrowBackOutline, close, camera, image });
   }
 
   async addRoll() {
@@ -89,7 +91,17 @@ export class AddRollsPage {
       const { descripcion, nombre, precio } = this.form.value;
 
       if (!this.fotoRoll) {
-        this._toast.getToast('Insertar un foto', 'middle', 'warning');
+        //  await       this._toast.getToast('Insertar un foto', 'middle', 'warning');
+
+        const toast = await this._toastControler.create({
+          message: 'Insertar un foto',
+          duration: 1500,
+          position: 'bottom',
+          color: 'warning',
+        });
+
+        await toast.present();
+
         return;
       }
 
@@ -106,13 +118,32 @@ export class AddRollsPage {
         this.fotoRoll
       );
 
-      this._toast.getToast('registrado con exito', 'middle', 'success');
+      // await this._toast.getToast('registrado con exito', 'middle', 'success');
+      const toast = await this._toastControler.create({
+        message: 'registrado con exito',
+        duration: 1500,
+        position: 'top',
+        color: 'success',
+      });
+
+      await toast.present();
+
       this.form.reset();
       this.fotoRoll = null;
       this.addLoading = false;
     } catch (error) {
       console.log(error);
-      this._toast.getToast('Error al registrar', 'bottom', 'danger');
+      // await this._toast.getToast('Error al registrar', 'bottom', 'danger');
+
+      const toast = await this._toastControler.create({
+        message: 'Error al registrar',
+        duration: 1500,
+        color: 'danger',
+        position: 'bottom',
+      });
+
+      await toast.present();
+
       this.addLoading = false;
     }
   }

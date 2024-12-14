@@ -19,6 +19,7 @@ import {
   IonButtons,
   IonIcon,
   IonInput,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { UploadImageService } from 'src/app/shared/services/upload-image.service';
@@ -57,7 +58,8 @@ export class AddCalzonePage {
   private _router = inject(Router);
   private _uploadImageService = inject(UploadImageService);
   private _calzoneService = inject(CalzoneService);
-  private _toast = inject(ToastService);
+  // private _toast = inject(ToastService);
+  private _toastController = inject(ToastController)
 
   dynamicPrice: number = 0;
   openModal = false;
@@ -95,13 +97,31 @@ export class AddCalzonePage {
         this.calzoneFoto
       );
 
-      this._toast.getToast('registrado con exito', 'middle', 'success');
+//  await     this._toast.getToast('registrado con exito', 'middle', 'success');
+
+const toast = await this._toastController.create({
+  message :"Registrado con exito",
+  position: "top",
+  color: "success"
+})
+await toast.present()
+
       this.form.reset();
       this.calzoneFoto = null;
       this.addLoading = false;
     } catch (error) {
       console.log(error);
-      this._toast.getToast('Error al registrar', 'bottom', 'danger');
+    //  await this._toast.getToast('Error al registrar', 'bottom', 'danger');
+
+
+    const toast = await this._toastController.create({
+      message: "Error al registrarse",
+      position: "bottom",
+      color: "danger"
+    })
+
+    await toast.present() 
+
       this.addLoading = false;
     }
   }

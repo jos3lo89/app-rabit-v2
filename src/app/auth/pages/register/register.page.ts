@@ -16,6 +16,7 @@ import {
   IonButton,
   IonInput,
   IonSpinner,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
@@ -45,7 +46,7 @@ import { RouterLink } from '@angular/router';
 export default class RegisterPage implements OnInit {
   private _authService = inject(AuthService);
   private _fb = inject(FormBuilder);
-  private _toastService = inject(ToastService);
+  private _toastController = inject(ToastController);
 
   isloadingSubmitBtn = false;
 
@@ -62,7 +63,15 @@ export default class RegisterPage implements OnInit {
 
   async registrar() {
     if (!this.form.valid) {
-      this._toastService.getToast('Formulario invalido', 'top', 'warning');
+
+      const toast = await this._toastController.create({
+        message: 'Formulario invalido',
+        position: 'top',
+        duration: 1500,
+        color: 'warning',
+      });
+
+      await toast.present();
 
       return;
     }
@@ -70,7 +79,15 @@ export default class RegisterPage implements OnInit {
     try {
       const { email, password, apellido, nombre } = this.form.value;
       if (!email || !password || !nombre || !apellido) {
-        this._toastService.getToast('Rellene el formulario', 'top', 'warning');
+
+        const toast = await this._toastController.create({
+          message: 'Rellene el formulario',
+          position: 'top',
+          duration: 1500,
+          color: 'warning',
+        });
+
+        await toast.present();
 
         return;
       }
@@ -85,7 +102,15 @@ export default class RegisterPage implements OnInit {
         rol: 'admin',
       });
 
-      this._toastService.getToast('Registrado correctamente', 'top', 'success');
+      const toast = await this._toastController.create({
+        message: 'Registrado correctamente',
+        position: 'top',
+        duration: 1500,
+        color: 'success',
+      });
+
+      await toast.present();
+
       this.form.reset();
 
       this.isloadingSubmitBtn = false;

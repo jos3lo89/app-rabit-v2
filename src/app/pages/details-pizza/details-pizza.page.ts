@@ -11,6 +11,7 @@ import {
   IonSelectOption,
   IonSelect,
   IonIcon,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -46,8 +47,11 @@ export class DetailsPizzaPage implements OnInit {
   private _authService = inject(AuthService);
   private _pizzaService = inject(PizzaService);
   private _router = inject(Router);
-  private _toast = inject(ToastService);
+  // private _toast = inject(ToastService);
   private _cartService = inject(CartService);
+  // private _toastController   = inject(ToastController)
+  private _toastController = inject(ToastController);
+
   params = {
     id: '',
     backUrl: '',
@@ -58,14 +62,24 @@ export class DetailsPizzaPage implements OnInit {
     this.selectedCombination[index] = value;
   }
 
-  validateCombination() {
+  async validateCombination() {
     const uniqueItems = new Set(this.selectedCombination);
     if (uniqueItems.size !== this.selectedCombination.length) {
-      this._toast.getToast(
-        'Por favor, selecciona diferentes opciones.',
-        'middle',
-        'danger'
-      );
+      //  await     this._toast.getToast(
+      //         'Por favor, selecciona diferentes opciones.',
+      //         'middle',
+      //         'danger'
+      //       );
+
+      const toast = await this._toastController.create({
+        message: 'Por favor, selecciona diferentes opciones',
+        color: 'danger',
+        position: 'bottom',
+      });
+
+      await toast.present();
+      // const toast = await this._toastController
+
       return false;
     }
     return true;
@@ -197,25 +211,51 @@ export class DetailsPizzaPage implements OnInit {
       (this.pizza?.opciones.esCuatroEstaciones &&
         this.selectedCombination.length !== 4)
     ) {
-      this._toast.getToast(
-        'Por favor, selecciona todas las opciones requeridas.',
-        'middle',
-        'danger'
-      );
+      // await this._toast.getToast(
+      //   'Por favor, selecciona todas las opciones requeridas.',
+      //   'middle',
+      //   'danger'
+      // );
+
+      const toast = await this._toastController.create({
+        message: 'Por favor, selecciona todas las opciones requeridas',
+        position: 'bottom',
+        color: 'danger',
+      });
+
+      await toast.present();
+
       return;
     }
 
     if (!this.userId) {
-      this._toast.getToast(
-        'Iniciar sesion para agregar al carrito',
-        'middle',
-        'warning'
-      );
+      // await this._toast.getToast(
+      //   'Iniciar sesion para agregar al carrito',
+      //   'middle',
+      //   'warning'
+      // );
+
+      const toast = await this._toastController.create({
+        message: 'Iniciar sesion para agregar al carrito',
+        position: 'bottom',
+        color: 'warning',
+      });
+
+      await toast.present();
+
       return;
     }
 
     if (!this.pizza) {
-      this._toast.getToast('fallo traer la pizza', 'middle', 'warning');
+      // await this._toast.getToast('fallo traer la pizza', 'middle', 'warning');
+      const toast = await this._toastController.create({
+        message: 'fallo traer la pizza',
+        position: 'bottom',
+        color: 'warning',
+      });
+
+      await toast.present();
+
       return;
     }
 
@@ -263,7 +303,14 @@ export class DetailsPizzaPage implements OnInit {
     } catch (error) {
       console.log(error);
       this.addToCartLoading = false;
-      this._toast.getToast('Error al añadir', 'middle', 'warning');
+      // await this._toast.getToast('Error al añadir', 'middle', 'warning');
+      const toast = await this._toastController.create({
+        message: 'Error al añadir',
+        position: 'bottom',
+        color: 'warning',
+      });
+
+      await toast.present();
     }
   }
 }

@@ -13,6 +13,7 @@ import {
   IonButton,
   IonCardTitle,
   IonIcon,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
@@ -40,7 +41,8 @@ export class DetailsExtrasPage implements OnInit {
   private _authService = inject(AuthService);
   private _calzoneService = inject(ExtrasService);
   private _router = inject(Router);
-  private _toast = inject(ToastService);
+  // private _toast = inject(ToastService);
+  private _toastController = inject(ToastController);
   private _cartService = inject(CartService);
 
   params = {
@@ -57,11 +59,19 @@ export class DetailsExtrasPage implements OnInit {
 
   async addToCart() {
     if (!this.userId) {
-      this._toast.getToast(
-        'Iniciar sesion para agregar al carrito',
-        'middle',
-        'warning'
-      );
+      //  await     this._toast.getToast(
+      //         'Iniciar sesion para agregar al carrito',
+      //         'middle',
+      //         'warning'
+      //       );
+
+      const toast = await this._toastController.create({
+        message: 'Iniciar sesion para agregar al carrito',
+        color: 'warning',
+        position: 'middle',
+      });
+
+      await toast.present();
 
       return;
     }
@@ -85,7 +95,14 @@ export class DetailsExtrasPage implements OnInit {
     } catch (error) {
       console.log(error);
       this.addToCartLoading = false;
-      this._toast.getToast('Error al añadir', 'middle', 'warning');
+      // await this._toast.getToast('Error al añadir', 'middle', 'warning');
+      const toast = await this._toastController.create({
+        message: 'Error al añadir',
+        position: 'bottom',
+        color: 'warning',
+      });
+
+      await toast.present();
     }
   }
 

@@ -12,6 +12,7 @@ import {
   IonInput,
   IonHeader,
   IonIcon,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { formBuilder } from './utils/formDrink';
 import { Router } from '@angular/router';
@@ -46,7 +47,8 @@ export class AddDrinkPage implements OnInit {
   private _router = inject(Router);
   private _uploadImage = inject(UploadImageService);
   private _drinkService = inject(DrinkService);
-  private _toast = inject(ToastService);
+  // private _toast = inject(ToastService);
+  private _toastController = inject(ToastController)
 
   form = formBuilder();
   openModal = false;
@@ -67,14 +69,30 @@ export class AddDrinkPage implements OnInit {
 
   async addDrink() {
     if (!this.fotoBebida) {
-      this._toast.getToast('Debe ingresar una imagen', 'middle', 'warning');
+//  await     this._toast.getToast('Debe ingresar una imagen', 'middle', 'warning');
+
+const toast = await this._toastController.create({
+  message: "Debe ingresar un imagen."
+})
+
+await toast.present()
       return;
     }
 
     const { descripcion, nombre, precio } = this.form.value;
 
     if (!descripcion || !nombre || !precio) {
-      this._toast.getToast('complete el formulario', 'middle', 'warning');
+    //  await this._toast.getToast('complete el formulario', 'middle', 'warning');
+
+    const toast = await this._toastController.create({
+      message: "Complete el formulario.",
+      position: "bottom",
+      color: "warning"
+    })
+
+    await toast.present()
+
+
       return;
     }
     try {
@@ -86,13 +104,30 @@ export class AddDrinkPage implements OnInit {
       );
 
       this.guardando = false;
-      this._toast.getToast('Bebida guardada', 'middle', 'success');
+      // await this._toast.getToast('Bebida guardada', 'middle', 'success');
+
+      const toast = await this._toastController.create({
+        message: "Bebida guardada.",
+        position: "top",
+        color: "success"
+      })
+      await toast.present()
+
+
       this.form.reset();
       this.fotoBebida = null;
     } catch (error) {
       console.log(error);
 
-      this._toast.getToast('Error al guardar la bebida', 'middle', 'danger');
+      // await this._toast.getToast('Error al guardar la bebida', 'middle', 'danger');
+
+      const toast = await this._toastController.create({
+        message: "Error al registrar la bebida.",
+        position: "bottom",
+        color: "danger"
+      })
+await toast.present()
+
       this.guardando = false;
     }
   }

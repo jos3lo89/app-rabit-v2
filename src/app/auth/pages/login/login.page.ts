@@ -26,7 +26,6 @@ import { GoogleBtnComponent } from '../../components/google-btn/google-btn.compo
 import { LoadingService } from 'src/app/shared/services/loading.service';
 import { addIcons } from 'ionicons';
 import { diamond, lockClosed, mailOutline, mailSharp } from 'ionicons/icons';
-import { Dialog } from '@capacitor/dialog';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -78,12 +77,6 @@ export default class LoginPage implements OnInit {
   });
 
   async ingresar() {
-    const { value } = await Dialog.confirm({
-      title: 'Confirm',
-      message: 'Are you like boton',
-    });
-    console.log('valor de dialog', value);
-
     if (this.form.invalid) return;
     const { email, password } = this.form.value;
     if (!email || !password) return;

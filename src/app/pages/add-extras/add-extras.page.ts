@@ -19,6 +19,7 @@ import {
   IonToolbar,
   IonButtons,
   IonIcon,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { CameraSource } from '@capacitor/camera';
 import { UploadImageService } from 'src/app/shared/services/upload-image.service';
@@ -57,7 +58,8 @@ export class AddExtrasPage implements OnInit {
   private _router = inject(Router);
   private _uploadImageService = inject(UploadImageService);
   private _extraService = inject(ExtrasService);
-  private _toast = inject(ToastService);
+  // private _toast = inject(ToastService);
+  private _toastController = inject(ToastController);
 
   fotoExtra: string | null = null;
   openModal = false;
@@ -87,7 +89,12 @@ export class AddExtrasPage implements OnInit {
       const { descripcion, nombre, precio } = this.form.value;
 
       if (!this.fotoExtra) {
-        this._toast.getToast('Insertar un foto', 'middle', 'warning');
+        //  await       this._toast.getToast('Insertar un foto', 'middle', 'warning');
+        const toast = await this._toastController.create({
+          message: 'Debe subir un foto.',
+          position: 'middle',
+          color: 'warning',
+        });
         return;
       }
 
@@ -107,13 +114,27 @@ export class AddExtrasPage implements OnInit {
 
       this.fotoExtra = null;
 
-      this._toast.getToast('Extras agergado correctament', 'middle', 'success');
+      //  await this._toast.getToast('Extras agergado correctament', 'middle', 'success');
+
+      const toast = await this._toastController.create({
+        message: 'Extra registrado.',
+        position: 'top',
+        color: 'success',
+      });
     } catch (error) {
-      this._toast.getToast(
-        'Error al registrar el producto',
-        'middle',
-        'danger'
-      );
+      // await this._toast.getToast(
+      //   'Error al registrar el producto',
+      //   'middle',
+      //   'danger'
+      // );
+
+      const toast = await this._toastController.create({
+        message: 'Error al registrar el extra.',
+        position: 'bottom',
+        color: 'danger',
+      });
+      await toast.present();
+
       this.addLoading = false;
       console.log(error);
     }

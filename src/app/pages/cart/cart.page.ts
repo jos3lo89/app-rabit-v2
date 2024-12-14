@@ -8,7 +8,6 @@ import {
   IonLabel,
   IonIcon,
   IonSpinner,
-  IonThumbnail,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { User } from '@angular/fire/auth';
