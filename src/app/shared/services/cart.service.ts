@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { Cart, CartDb, ProductoCart } from '../interfaces/cart.interfaces';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastService } from './toast.service';
+import { EstadoMesa } from '../interfaces/mesa.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +50,21 @@ export class CartService {
           this._cartItems.set([]);
         }
       },
+    });
+  }
+
+  getCollectionLength(): Observable<number> {
+    const collRef = collection(this._fireStore, 'tickets');
+
+    return new Observable((observer) => {
+      getDocs(collRef)
+        .then((qryShot) => {
+          observer.next(qryShot.size);
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
     });
   }
 
@@ -184,7 +200,7 @@ export class CartService {
     }
   }
 
-  async clearCart() {
+  async clearCart(num_ticket: number, num_mesa: number, id_mesa: string) {
     const userId = this._currentUserId();
 
     if (!this._isAuth || !userId) {
@@ -197,12 +213,18 @@ export class CartService {
 
       await this.saveTicket(
         cartItems,
-        cartItems.reduce((sum, item) => sum + item.precioTotal, 0)
+        cartItems.reduce((sum, item) => sum + item.precioTotal, 0),
+        num_ticket,
+        num_mesa
       );
 
       for (const item of cartItems) {
         const docRef = doc(this._fireStore, `${this._collName}/${item.id}`);
         await deleteDoc(docRef);
+      }
+
+      if (num_mesa !== 0) {
+        await this.updateMesa(id_mesa);
       }
 
       this._cartItems.set([]);
@@ -223,7 +245,21 @@ export class CartService {
 
   /* ============================================================= */
 
-  async saveTicket(products: CartDb[], totalAmount: number) {
+  async updateMesa(id: string) {
+    try {
+      const docREf = doc(this._fireStore, `mesas/${id}`);
+      await updateDoc(docREf, { estado: EstadoMesa.EN_USO });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async saveTicket(
+    products: CartDb[],
+    totalAmount: number,
+    num_ticket: number,
+    num_mesa: number
+  ) {
     const userId = this._currentUserId();
 
     if (!userId) {
@@ -237,7 +273,9 @@ export class CartService {
         userId,
         products,
         totalAmount,
-        date: new Date().toLocaleDateString(), // aqui par filtrar
+        date: new Date().toLocaleDateString(),
+        num_ticket,
+        num_mesa,
       };
 
       await addDoc(collRef, ticketData);

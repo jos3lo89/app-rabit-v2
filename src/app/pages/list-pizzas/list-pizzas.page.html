@@ -19,9 +19,7 @@
     <ion-card class="pizza-card" (click)="pushDetails(pizza.id)">
       <div class="separador">
         <ion-card-content>
-          <ion-card-title style="color: #efefef"
-            >{{pizza.nombre}}</ion-card-title
-          >
+          <h2>{{pizza.nombre}}</h2>
           @if (pizza.opciones.esDuo) {
           <span style="color: cornflowerblue">Duo</span>
           } @if (pizza.opciones.esCuatroEstaciones) {

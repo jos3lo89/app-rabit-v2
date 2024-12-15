@@ -24,6 +24,7 @@ import { PdfService } from 'src/app/shared/services/pdf.service';
 import { addIcons } from 'ionicons';
 import { printOutline, arrowBackOutline, searchOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
+import { PdfV2 } from 'src/app/shared/interfaces/pdf.interfaces';
 
 @Component({
   selector: 'app-ticket-history',
@@ -56,6 +57,7 @@ export class TicketHistoryPage implements OnInit {
   private _pdfService = inject(PdfService);
   private _router = inject(Router);
 
+  ganaciaTotal: null | number = null;
   tickets: any[] = [];
   startDate: string = this.getTodayDate();
   endDate: string = this.getTodayDate(); // me servi en un futuro
@@ -94,17 +96,22 @@ export class TicketHistoryPage implements OnInit {
         `${parseInt(day)}/${parseInt(month)}/${year}`
       );
 
+      this.ganaciaTotal = this.tickets.reduce(
+        (total, order) => total + order.totalAmount,
+        0
+      );
+
+      // console.log('total ganacia', totalGanacia);
+
       console.log('tikcets', this.tickets);
     } catch (error) {
       console.error('Error al obtener tickets:', error);
     }
   }
 
-  reprintTicket(ticket: any) {
-    this._pdfService.generarBoleta({
-      producto: ticket.products,
-      totalPagar: ticket.totalAmount,
-    });
+  reprintTicket(ticket: PdfV2) {
+    // this._pdfService.generarBoletaHistory(ticket.products, ticket.totalAmount);
+    this._pdfService.generarBoletaHistory(ticket);
   }
 
   formatDate(date: string) {

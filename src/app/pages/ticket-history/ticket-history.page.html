@@ -42,7 +42,21 @@
         </ion-col>
       </ion-row>
 
-      <ion-row class="ion-padding">
+      @if (ganaciaTotal) {
+      <ion-card
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px;
+        "
+      >
+        <p>Ganancia total del dia:</p>
+        <ion-button fill="clear">S/ {{ganaciaTotal.toFixed(2)}}</ion-button>
+      </ion-card>
+      }
+
+      <ion-row class="">
         <ion-col size="12">
           <ion-card *ngIf="tickets.length > 0">
             <ion-card-header style="text-align: center">
@@ -52,8 +66,10 @@
               <ion-list>
                 <ion-item *ngFor="let ticket of tickets">
                   <ion-label>
-                    <h3>Fecha: {{ formatDate(ticket.date) }}</h3>
+                    <!-- <h3>Fecha: {{ formatDate(ticket.date) }}</h3> -->
+                    <h3>Fecha: {{ ticket.date }}</h3>
                     <p>Total: {{ ticket.totalAmount }}</p>
+                    <p>Ticket N°: {{ ticket.num_ticket }}</p>
                   </ion-label>
                   <ion-button
                     slot="end"

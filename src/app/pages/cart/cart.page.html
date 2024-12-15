@@ -29,6 +29,9 @@
           <div>
             <ion-label>
               <h2>{{ item.nombre }}</h2>
+              @if (item.pizzaDetail?.sabor) {
+              <p>{{item.pizzaDetail?.sabor}}</p>
+              }
               <p>Precio: s/ {{ item.precioUnidad.toFixed(2) }}</p>
               <p>Cantidad: {{ item.cantidad }}</p>
               <p>Total: S/ {{ item.precioTotal.toFixed(2) }}</p>
@@ -79,6 +82,21 @@
       <ion-button expand="full" fill="clear">
         <span>Precio total: </span> S/ {{ precioTotalFinal }}
       </ion-button>
+    </ion-card>
+
+    <ion-card style="padding: 20px">
+      <ion-select
+        label="Seleccione una mesa"
+        placeholder="Seleccione"
+        (ionChange)="onMesaChange($event)"
+      >
+        @for (mesa of mesas; track $index) {
+        <ion-select-option value="{{mesa.id}}"
+          >{{mesa.num_mesa !== 0 ? "Mesa " + mesa.num_mesa: "Para llevar"
+          }}</ion-select-option
+        >
+        }
+      </ion-select>
     </ion-card>
 
     <div class="box-btn-imprime">

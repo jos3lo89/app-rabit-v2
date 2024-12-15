@@ -99,5 +99,17 @@ export const routes: Routes = [
       import('./pages/ticket-history/ticket-history.page').then(
         (m) => m.TicketHistoryPage
       ),
+  },  {
+    path: 'mesas',
+    loadComponent: () => import('./pages/mesas/mesas.page').then( m => m.MesasPage)
   },
+  {
+    path: 'add-mesa',
+    loadComponent: () => import('./pages/add-mesa/add-mesa.page').then( m => m.AddMesaPage)
+  },
+  {
+    path: 'details-mesa',
+    loadComponent: () => import('./pages/details-mesa/details-mesa.page').then( m => m.DetailsMesaPage)
+  },
+
 ];

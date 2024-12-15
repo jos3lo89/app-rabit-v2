@@ -39,6 +39,7 @@
     "@capacitor/toast": "^6.0.3",
     "@ionic/angular": "^8.0.0",
     "@ionic/pwa-elements": "^3.3.0",
+    "dayjs": "^1.11.13",
     "firebase": "^11.0.2",
     "ionicons": "^7.2.1",
     "jspdf": "^2.5.2",

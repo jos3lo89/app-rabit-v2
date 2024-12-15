@@ -1,0 +1,93 @@
+<ion-content [fullscreen]="true">
+  @if (!isLoading ) {
+
+  <div
+    style="
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 360px;
+      margin-bottom: 20px;
+    "
+  >
+    <ion-card class="box-back-btn">
+      <ion-button fill="clear" (click)="backBtn()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <p><span style="color: red">N° </span> {{mesa?.num_mesa}}</p>
+      </ion-button>
+      <ion-button fill="clear">
+        <p>
+          <span style="color: red">Estado:</span> {{mesa?.estado == "en_uso" ?
+          "en uso" : "libre" }}
+        </p>
+      </ion-button>
+    </ion-card>
+
+    @if ( detallesMesa ) {
+
+    <ion-card>
+      <ion-button fill="clear" style="text-transform: lowercase">
+        <span style="text-transform: capitalize; color: red"
+          >Estado de la mesa:
+        </span>
+        {{detallesMesa.entrega == "pendiente" ? " pendiente de entrega" : "
+        Entregado"}}
+      </ion-button>
+    </ion-card>
+
+    @for (producto of detallesMesa.productos; track $index) {
+    <ion-card>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img [src]="producto.imagen" alt="Producto" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ producto.nombre }}</h2>
+          <p>Precio: S/ {{ producto.precioUnidad.toFixed(2) }}</p>
+          <p>Cantidad: {{ producto.cantidad }}</p>
+          <p>Total: S/ {{ producto.precioTotal.toFixed(2) }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    }
+    <ion-card style="padding: 18px">
+      <form [formGroup]="form" (ngSubmit)="registrarCambioEstado()">
+        <ion-select
+          label="seleccione el estado"
+          placeholder="Estado"
+          formControlName="estado"
+        >
+          @for (estado of estadosEntrega; track $index) {
+          <ion-select-option [value]="estado">{{ estado }}</ion-select-option>
+          }
+        </ion-select>
+      </form>
+    </ion-card>
+
+    <ion-button color="tertiary" (click)="registrarCambioEstado()"
+      >Cambiar de Estado</ion-button
+    >
+
+    <ion-button color="danger" (click)="limpiarMesa()">Limpiar mesa</ion-button>
+    } @else {
+
+    <div style="text-align: center; padding: 20px; color: red">
+      <h2>Mesa libre</h2>
+    </div>
+
+    }
+  </div>
+  } @else {
+  <div
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 80px;
+    "
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+  }
+</ion-content>

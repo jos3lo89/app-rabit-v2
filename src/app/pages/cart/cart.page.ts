@@ -8,6 +8,9 @@ import {
   IonLabel,
   IonIcon,
   IonSpinner,
+  IonSelect,
+  IonSelectOption,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { User } from '@angular/fire/auth';
@@ -21,6 +24,10 @@ import {
 } from 'ionicons/icons';
 import { PdfService } from 'src/app/shared/services/pdf.service';
 import { AlertController } from '@ionic/angular/standalone';
+import { MesasService } from 'src/app/shared/services/mesas.service';
+import { EstadoMesa, MesaDb } from 'src/app/shared/interfaces/mesa.interfaces';
+import { DetallesMesaService } from 'src/app/shared/services/detalles-mesa.service';
+import { EntregaMesa } from 'src/app/shared/interfaces/detallesMesa.interfaces';
 
 @Component({
   selector: 'app-cart',
@@ -36,6 +43,8 @@ import { AlertController } from '@ionic/angular/standalone';
     IonCard,
     IonContent,
     CommonModule,
+    IonSelect,
+    IonSelectOption,
   ],
 })
 export class CartPage implements OnInit {
@@ -43,11 +52,22 @@ export class CartPage implements OnInit {
   private _cartService = inject(CartService);
   private _pdfService = inject(PdfService);
   private _alertController = inject(AlertController);
+  private _tostController = inject(ToastController);
+  private _mesaService = inject(MesasService);
+  private _detallesMesaService = inject(DetallesMesaService);
 
   currentUser: User | null = null;
   cartItems: CartDb[] | null = null;
   isUpdating: boolean = false;
   precioTotalFinal: number | null = null;
+  mesas: null | MesaDb[] = null;
+  num_ticket: number | null = null;
+  id_mesa: string | null = null;
+
+  onMesaChange(event: any) {
+    this.id_mesa = event.detail.value;
+    console.log('Mesa seleccionada:', this.id_mesa);
+  }
 
   pushRouter(route: string) {
     console.log(route);
@@ -59,7 +79,33 @@ export class CartPage implements OnInit {
 
   ngOnInit() {}
 
+  gettingMesas() {
+    this._mesaService.gettingMesas().subscribe({
+      next: (data) => {
+        this.mesas = data
+          .filter((mesa) => mesa.estado == EstadoMesa.ACTIVO)
+          .sort((a, b) => a.num_mesa - b.num_mesa);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  getCollLength() {
+    this._cartService.getCollectionLength().subscribe({
+      next: (data) => {
+        this.num_ticket = data + 1;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
   async ionViewWillEnter() {
+    this.getCollLength();
+
     this._authService.authState$.subscribe({
       next: (data) => {
         this.currentUser = data;
@@ -71,6 +117,7 @@ export class CartPage implements OnInit {
         console.log(error);
       },
     });
+    this.gettingMesas();
   }
 
   private loadCartItems(userId: string) {
@@ -159,6 +206,19 @@ export class CartPage implements OnInit {
       return;
     }
 
+    if (!this.id_mesa) {
+      const tost = await this._tostController.create({
+        message: 'Selecione una mesa',
+        position: 'middle',
+        duration: 1500,
+        color: 'warning',
+      });
+
+      await tost.present();
+
+      return;
+    }
+
     const alert = await this._alertController.create({
       header: 'Confirmar acción',
       message:
@@ -174,15 +234,50 @@ export class CartPage implements OnInit {
         {
           text: 'Aceptar',
           handler: async () => {
-            if (!this.cartItems || !this.precioTotalFinal) return;
-            this._pdfService.generarBoleta({
-              producto: this.cartItems,
-              totalPagar: this.precioTotalFinal,
-            });
+            if (!this.cartItems || !this.precioTotalFinal || !this.num_ticket)
+              return;
 
-            await this._cartService.clearCart();
+            if (this.id_mesa && this.mesas) {
+              const id_mesita = this.mesas.find(
+                (mesa) => mesa.id === this.id_mesa
+              );
+
+              if (!id_mesita) {
+                console.log('si hay mesita');
+
+                return;
+              }
+
+              await this._pdfService.generarBoleta(
+                this.cartItems,
+                this.precioTotalFinal,
+                id_mesita.num_mesa,
+                this.num_ticket
+              );
+
+              const mesa = await this.getMesa(this.id_mesa);
+
+              await this._cartService.clearCart(
+                this.num_ticket,
+                mesa.num_mesa,
+                mesa.id
+              );
+
+              // aqui mandar al mes detalles
+              // const mesaDetalles = {
+              //   id_mesa : mesa.id,
+              // }
+
+              await this._detallesMesaService.addDetails({
+                productos: this.cartItems,
+                id_mesa: mesa.id,
+                entrega: EntregaMesa.PENDIENTE,
+              });
+            }
+
             if (this.currentUser) {
               this.loadCartItems(this.currentUser.uid);
+              this.id_mesa = null;
             }
           },
         },
@@ -190,5 +285,9 @@ export class CartPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  getMesa(id: string) {
+    return this._mesaService.getMesa(id);
   }
 }

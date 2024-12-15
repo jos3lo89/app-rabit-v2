@@ -1,0 +1,66 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="box-back-btn">
+    <ion-button
+      fill="clear"
+      expand="full"
+      (click)="pushRouter('/private/profile')"
+    >
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
+  <ion-title size="large" style="text-align: center">Agregar mesa</ion-title>
+
+  <ion-card class="box-form">
+    <form [formGroup]="form" (ngSubmit)="registrarMesa()">
+      <ion-input
+        formControlName="num_mesa"
+        type="number"
+        label="Número de mesa"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ingrese el número de mesa"
+      ></ion-input>
+      <br />
+      <ion-input
+        formControlName="capacidad"
+        type="number"
+        label="Capacidad"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ingrese la capacidad de la mesa"
+      ></ion-input>
+      <br />
+      <ion-input
+        formControlName="ubicacion"
+        type="text"
+        label="ubicación"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ingrese la ubicación"
+      ></ion-input>
+      <br />
+
+      <ion-textarea
+        formControlName="notas"
+        label-placement="floating"
+        label="Notas de mesa"
+        fill="solid"
+        placeholder="Notas de la mesa"
+      >
+      </ion-textarea>
+      <br />
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px;
+        "
+      >
+        <ion-button color="secondary" type="submit">
+          {{guardando ? "Guardando..." : "Guardar" }}
+        </ion-button>
+      </div>
+    </form>
+  </ion-card>
+</ion-content>
