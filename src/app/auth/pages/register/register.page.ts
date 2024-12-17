@@ -63,7 +63,6 @@ export default class RegisterPage implements OnInit {
 
   async registrar() {
     if (!this.form.valid) {
-
       const toast = await this._toastController.create({
         message: 'Formulario invalido',
         position: 'top',
@@ -79,7 +78,6 @@ export default class RegisterPage implements OnInit {
     try {
       const { email, password, apellido, nombre } = this.form.value;
       if (!email || !password || !nombre || !apellido) {
-
         const toast = await this._toastController.create({
           message: 'Rellene el formulario',
           position: 'top',
@@ -99,7 +97,7 @@ export default class RegisterPage implements OnInit {
         password,
         apellido,
         nombre,
-        rol: 'admin',
+        rol: 'user',
       });
 
       const toast = await this._toastController.create({

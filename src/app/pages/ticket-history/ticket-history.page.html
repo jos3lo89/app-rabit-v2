@@ -23,8 +23,21 @@
               </div>
               <div class="box-btns-fecha-search">
                 <ion-button id="open-modal"> {{startDate}} </ion-button>
-                <ion-button color="tertiary" (click)="fetchTickets()">
+                <ion-button
+                  [disabled]="loading"
+                  color="tertiary"
+                  (click)="fetchTickets()"
+                >
+                  @if (loading) {
+                  <ion-spinner
+                    name="crescent"
+                    style="width: 18px; height: 18px"
+                  ></ion-spinner>
+
+                  } @else {
+
                   <ion-icon name="search-outline"></ion-icon>
+                  }
                 </ion-button>
               </div>
             </ion-card-header>

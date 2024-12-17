@@ -19,6 +19,7 @@ import {
   IonSpinner,
   ToastController,
   AlertController,
+  IonText,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EstadoMesa, MesaDb } from 'src/app/shared/interfaces/mesa.interfaces';
@@ -41,6 +42,7 @@ import { MesasService } from 'src/app/shared/services/mesas.service';
     IonIcon,
     IonButton,
     IonLabel,
+    IonText,
     IonCard,
     IonItem,
     IonSelect,
@@ -62,6 +64,7 @@ export class DetailsMesaPage implements OnInit {
   private _alertController = inject(AlertController);
 
   isLoading = false;
+  estadoMesa = EstadoMesa;
 
   form = this._fb.group({
     estado: this._fb.control('', [Validators.required]),

@@ -1,6 +1,21 @@
 import { Routes } from '@angular/router';
+import { roleGuard } from '../auth/guards/role.guard';
 
 export default [
+  {
+    canActivate: [roleGuard],
+    data: { requiredRole: 'admin' },
+    path: 'ticket-history',
+    loadComponent: () =>
+      import('../pages/ticket-history/ticket-history.page').then(
+        (m) => m.TicketHistoryPage
+      ),
+  },
+  {
+    path: 'add-mesa',
+    loadComponent: () =>
+      import('../pages/add-mesa/add-mesa.page').then((m) => m.AddMesaPage),
+  },
   {
     path: 'add-pizza',
     loadComponent: () =>

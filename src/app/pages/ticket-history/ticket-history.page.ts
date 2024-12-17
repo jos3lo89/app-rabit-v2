@@ -18,6 +18,7 @@ import {
   IonIcon,
   IonModal,
   IonText,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { PdfService } from 'src/app/shared/services/pdf.service';
@@ -32,6 +33,7 @@ import { PdfV2 } from 'src/app/shared/interfaces/pdf.interfaces';
   styleUrls: ['./ticket-history.page.scss'],
   standalone: true,
   imports: [
+    IonSpinner,
     IonText,
     IonModal,
     IonIcon,
@@ -57,6 +59,7 @@ export class TicketHistoryPage implements OnInit {
   private _pdfService = inject(PdfService);
   private _router = inject(Router);
 
+  loading = false;
   ganaciaTotal: null | number = null;
   tickets: any[] = [];
   startDate: string = this.getTodayDate();
@@ -90,6 +93,7 @@ export class TicketHistoryPage implements OnInit {
     if (!this.startDate) return;
 
     try {
+      this.loading = true;
       const [year, month, day] = this.startDate.split('-');
 
       this.tickets = await this._cartService.getTicketsByDate(
@@ -104,8 +108,12 @@ export class TicketHistoryPage implements OnInit {
       // console.log('total ganacia', totalGanacia);
 
       console.log('tikcets', this.tickets);
+
+      this.loading = false;
     } catch (error) {
       console.error('Error al obtener tickets:', error);
+
+      this.loading = false;
     }
   }
 

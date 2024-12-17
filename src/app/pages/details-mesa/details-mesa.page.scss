@@ -11,3 +11,39 @@ ion-spinner {
   width: 100px;
   height: 100px;
 }
+
+
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem; /* Espaciado entre los elementos */
+  padding: 1rem;
+}
+
+.card-item {
+  flex: 1; /* Hace que todos los elementos sean del mismo tamaño */
+  max-width: 200px; /* Limita el ancho máximo */
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* Bordes redondeados */
+  // background-color: #f9f9f9; /* Fondo claro */
+}
+
+.card-item ion-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #333; /* Texto más oscuro para mejor legibilidad */
+}
+
+.highlight {
+  // color: red;
+  font-weight: bold;
+}

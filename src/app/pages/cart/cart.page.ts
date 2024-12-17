@@ -162,33 +162,40 @@ export class CartPage implements OnInit {
   async removeItem(item: CartDb) {
     if (!this.cartItems) return;
 
-    const alert = await this._alertController.create({
-      header: 'Confirmar acción',
-      message: '¿Estás seguro de que quieres eliminar el producto del carrito?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('Acción cancelada por el usuario.');
-          },
-        },
-        {
-          text: 'Aceptar',
-          handler: async () => {
-            this._cartService.deleteCartItemInDb(item);
-            if (this.cartItems) {
-              this.cartItems = this.cartItems.filter(
-                (cartItem) => cartItem.id !== item.id
-              );
-            }
-            this.calcularPrecioTotal();
-          },
-        },
-      ],
-    });
+    this._cartService.deleteCartItemInDb(item);
+    if (this.cartItems) {
+      this.cartItems = this.cartItems.filter(
+        (cartItem) => cartItem.id !== item.id
+      );
+    }
+    this.calcularPrecioTotal();
+    // const alert = await this._alertController.create({
+    //   header: 'Confirmar acción',
+    //   message: '¿Estás seguro de que quieres eliminar el producto del carrito?',
+    //   buttons: [
+    //     {
+    //       text: 'Cancelar',
+    //       role: 'cancel',
+    //       handler: () => {
+    //         console.log('Acción cancelada por el usuario.');
+    //       },
+    //     },
+    //     {
+    //       text: 'Aceptar',
+    //       handler: async () => {
+    //         this._cartService.deleteCartItemInDb(item);
+    //         if (this.cartItems) {
+    //           this.cartItems = this.cartItems.filter(
+    //             (cartItem) => cartItem.id !== item.id
+    //           );
+    //         }
+    //         this.calcularPrecioTotal();
+    //       },
+    //     },
+    //   ],
+    // });
 
-    await alert.present();
+    // await alert.present();
   }
 
   calcularPrecioTotal() {
@@ -219,72 +226,116 @@ export class CartPage implements OnInit {
       return;
     }
 
-    const alert = await this._alertController.create({
-      header: 'Confirmar acción',
-      message:
-        '¿Estás seguro de que quieres imprimir el ticket y vaciar el carrito?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('Acción cancelada por el usuario.');
-          },
-        },
-        {
-          text: 'Aceptar',
-          handler: async () => {
-            if (!this.cartItems || !this.precioTotalFinal || !this.num_ticket)
-              return;
+    if (!this.cartItems || !this.precioTotalFinal || !this.num_ticket) return;
 
-            if (this.id_mesa && this.mesas) {
-              const id_mesita = this.mesas.find(
-                (mesa) => mesa.id === this.id_mesa
-              );
+    if (this.id_mesa && this.mesas) {
+      const id_mesita = this.mesas.find((mesa) => mesa.id === this.id_mesa);
 
-              if (!id_mesita) {
-                console.log('si hay mesita');
+      if (!id_mesita) {
+        console.log('si hay mesita');
 
-                return;
-              }
+        return;
+      }
 
-              await this._pdfService.generarBoleta(
-                this.cartItems,
-                this.precioTotalFinal,
-                id_mesita.num_mesa,
-                this.num_ticket
-              );
+      await this._pdfService.generarBoleta(
+        this.cartItems,
+        this.precioTotalFinal,
+        id_mesita.num_mesa,
+        this.num_ticket
+      );
 
-              const mesa = await this.getMesa(this.id_mesa);
+      const mesa = await this.getMesa(this.id_mesa);
 
-              await this._cartService.clearCart(
-                this.num_ticket,
-                mesa.num_mesa,
-                mesa.id
-              );
+      await this._cartService.clearCart(
+        this.num_ticket,
+        mesa.num_mesa,
+        mesa.id
+      );
 
-              // aqui mandar al mes detalles
-              // const mesaDetalles = {
-              //   id_mesa : mesa.id,
-              // }
+      // aqui mandar al mes detalles
+      // const mesaDetalles = {
+      //   id_mesa : mesa.id,
+      // }
 
-              await this._detallesMesaService.addDetails({
-                productos: this.cartItems,
-                id_mesa: mesa.id,
-                entrega: EntregaMesa.PENDIENTE,
-              });
-            }
+      await this._detallesMesaService.addDetails({
+        productos: this.cartItems,
+        id_mesa: mesa.id,
+        entrega: EntregaMesa.PENDIENTE,
+      });
+    }
 
-            if (this.currentUser) {
-              this.loadCartItems(this.currentUser.uid);
-              this.id_mesa = null;
-            }
-          },
-        },
-      ],
-    });
+    if (this.currentUser) {
+      this.loadCartItems(this.currentUser.uid);
+      this.id_mesa = null;
+    }
 
-    await alert.present();
+    // desde aqui comentar
+    // const alert = await this._alertController.create({
+    //   header: 'Confirmar acción',
+    //   message:
+    //     '¿Estás seguro de que quieres imprimir el ticket y vaciar el carrito?',
+    //   buttons: [
+    //     {
+    //       text: 'Cancelar',
+    //       role: 'cancel',
+    //       handler: () => {
+    //         console.log('Acción cancelada por el usuario.');
+    //       },
+    //     },
+    //     {
+    //       text: 'Aceptar',
+    //       handler: async () => {
+    //         if (!this.cartItems || !this.precioTotalFinal || !this.num_ticket)
+    //           return;
+
+    //         if (this.id_mesa && this.mesas) {
+    //           const id_mesita = this.mesas.find(
+    //             (mesa) => mesa.id === this.id_mesa
+    //           );
+
+    //           if (!id_mesita) {
+    //             console.log('si hay mesita');
+
+    //             return;
+    //           }
+
+    //           await this._pdfService.generarBoleta(
+    //             this.cartItems,
+    //             this.precioTotalFinal,
+    //             id_mesita.num_mesa,
+    //             this.num_ticket
+    //           );
+
+    //           const mesa = await this.getMesa(this.id_mesa);
+
+    //           await this._cartService.clearCart(
+    //             this.num_ticket,
+    //             mesa.num_mesa,
+    //             mesa.id
+    //           );
+
+    //           // aqui mandar al mes detalles
+    //           // const mesaDetalles = {
+    //           //   id_mesa : mesa.id,
+    //           // }
+
+    //           await this._detallesMesaService.addDetails({
+    //             productos: this.cartItems,
+    //             id_mesa: mesa.id,
+    //             entrega: EntregaMesa.PENDIENTE,
+    //           });
+    //         }
+
+    //         if (this.currentUser) {
+    //           this.loadCartItems(this.currentUser.uid);
+    //           this.id_mesa = null;
+    //         }
+    //       },
+    //     },
+    //   ],
+    // });
+
+    // await alert.present();
   }
 
   getMesa(id: string) {

@@ -9,31 +9,48 @@
       margin-bottom: 20px;
     "
   >
-    <ion-card class="box-back-btn">
-      <ion-button fill="clear" (click)="backBtn()">
-        <ion-icon name="arrow-back-outline"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear">
-        <p><span style="color: red">N° </span> {{mesa?.num_mesa}}</p>
-      </ion-button>
-      <ion-button fill="clear">
-        <p>
-          <span style="color: red">Estado:</span> {{mesa?.estado == "en_uso" ?
-          "en uso" : "libre" }}
-        </p>
-      </ion-button>
-    </ion-card>
+    <div class="card-container">
+      <ion-card class="card-item">
+        <ion-button fill="clear" (click)="backBtn()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-card>
+      <ion-card class="card-item">
+        <ion-button fill="clear">
+          <!-- <p><span class="highlight">N° </span> {{ mesa?.num_mesa }}</p> -->
+          <ion-text> N° {{ mesa?.num_mesa }} </ion-text>
+        </ion-button>
+      </ion-card>
+      <ion-card class="card-item">
+        <!-- cambiar de color -->
+
+        @if (mesa && mesa.estado == estadoMesa.EN_USO) {
+        <ion-button fill="clear" color="danger">
+          <span class="highlight">en uso</span>
+        </ion-button>
+        } @else if (mesa && mesa.estado == estadoMesa.DESUSO) {
+        <ion-button fill="clear">
+          <span class="highlight">libre </span>
+        </ion-button>
+        }
+      </ion-card>
+    </div>
 
     @if ( detallesMesa ) {
 
-    <ion-card>
-      <ion-button fill="clear" style="text-transform: lowercase">
-        <span style="text-transform: capitalize; color: red"
-          >Estado de la mesa:
-        </span>
-        {{detallesMesa.entrega == "pendiente" ? " pendiente de entrega" : "
-        Entregado"}}
+    <ion-card
+      style="display: flex; justify-content: center; align-items: center"
+    >
+      @if (detallesMesa.entrega == "pendiente") {
+
+      <ion-button fill="clear" style="text-transform: capitalize; color: red">
+        Pendiente de entrega
       </ion-button>
+      } @else {
+      <ion-button color="tertiary" style="text-transform: capitalize">
+        entregado
+      </ion-button>
+      }
     </ion-card>
 
     @for (producto of detallesMesa.productos; track $index) {
@@ -57,6 +74,7 @@
           label="seleccione el estado"
           placeholder="Estado"
           formControlName="estado"
+          interface="action-sheet"
         >
           @for (estado of estadosEntrega; track $index) {
           <ion-select-option [value]="estado">{{ estado }}</ion-select-option>
@@ -65,14 +83,14 @@
       </form>
     </ion-card>
 
-    <ion-button color="tertiary" (click)="registrarCambioEstado()"
+    <ion-button color="secondary" (click)="registrarCambioEstado()"
       >Cambiar de Estado</ion-button
     >
 
     <ion-button color="danger" (click)="limpiarMesa()">Limpiar mesa</ion-button>
     } @else {
 
-    <div style="text-align: center; padding: 20px; color: red">
+    <div style="text-align: center; padding: 20px">
       <h2>Mesa libre</h2>
     </div>
 
